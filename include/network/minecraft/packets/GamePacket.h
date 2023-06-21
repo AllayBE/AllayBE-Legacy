@@ -5,6 +5,7 @@
 #include <exceptions/Exceptions.h>
 #include <misc/BitStreamHelper.h>
 #include <vector>
+#include <stdexcept>
 
 #ifndef GAME_PACKET_
 #define GAME_PACKET_

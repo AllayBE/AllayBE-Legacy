@@ -60,14 +60,25 @@ void GamePacket::deserializeBody(BitStream *stream)
 	}
 	rakFree_Ex(remainingBuffer, _FILE_AND_LINE_);
 
+	// for (BitSize_t i = 0; i < BITS_TO_BYTES(dataStream->GetNumberOfUnreadBits()); ++i)
+	// {
+	// 	printf("Index=%d, u8=%d\n", i, (dataStream->GetData()[i] & 0xFF));
+	// }
+
 	while (dataStream->GetNumberOfUnreadBits() > 0)
 	{
-		uint32_t packetLength = BitStreamHelper::ReadUnsignedVarInt(dataStream);
-		char *packetBuffer = (char *)rakMalloc_Ex(packetLength, _FILE_AND_LINE_);
-		dataStream->ReadAlignedBytes((unsigned char *)packetBuffer, packetLength);
-		BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, packetLength, true);
-		rakFree_Ex(packetBuffer, _FILE_AND_LINE_);
-		this->streams.push_back(packetStream);
+		try
+		{
+			uint32_t packetLength = BitStreamHelper::ReadUnsignedVarInt(dataStream);
+			char *packetBuffer = (char *)rakMalloc_Ex(packetLength, _FILE_AND_LINE_);
+			dataStream->ReadAlignedBytes((unsigned char *)packetBuffer, packetLength);
+			BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, packetLength, true);
+			rakFree_Ex(packetBuffer, _FILE_AND_LINE_);
+			this->streams.push_back(packetStream);
+		}
+		catch (std::runtime_error error)
+		{
+		}
 	}
 }
 

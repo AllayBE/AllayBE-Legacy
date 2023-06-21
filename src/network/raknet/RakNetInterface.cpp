@@ -143,8 +143,9 @@ void RakNetInterface::Handle()
 			{
 				this->logger->Debug("GamePacket received from, hash=%zu, address=%s\n", hashedAddress, systemAddress.ToString(true));
 
-				// GamePacket *packet = new GamePacket();
-				// packet->deserialize(stream);
+				GamePacket *packet = new GamePacket();
+				packet->deserialize(stream);
+				// handle
 			}
 		}
 	}
