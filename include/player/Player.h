@@ -11,9 +11,14 @@ class Player
 {
 protected:
 	SystemAddress address;
+	bool compressionEnabled;
 
 public:
 	Player(SystemAddress address);
+
+	void SetCompressionEnabled(bool value);
+
+	bool IsCompressionEnabled();
 
 	SystemAddress GetAddress();
 };

@@ -2,25 +2,21 @@
 
 #include "MinecraftPacket.h"
 #include "PacketDefinitions.h"
+#include <cstdint>
 #include <exceptions/Exceptions.h>
 #include <misc/BitStreamHelper.h>
 #include <stdexcept>
 #include <vector>
 
-#ifndef GAME_PACKET_
-#define GAME_PACKET_
+#ifndef REQUEST_NETWORK_SETTINGS_PACKET
+#define REQUEST_NETWORK_SETTINGS_PACKET
 
-typedef std::vector<BitStream *> StreamsList_t;
-
-class GamePacket : public MinecraftPacket
+class RequestNetworkSettingsPacket : public MinecraftPacket
 {
 protected:
-	bool compressionEnabled;
-	StreamsList_t streams;
+	int32_t protocolVersion;
 
 public:
-	GamePacket();
-
 	virtual uint32_t GetID() const override;
 
 	virtual void deserialize(BitStream *straem) override;
@@ -32,11 +28,7 @@ public:
 	virtual void deserializeBody(BitStream *stream) override;
 	virtual void serializeBody(BitStream *stream) override;
 
-	void SetCompressionEnabled(bool value);
-	void SetStreams(StreamsList_t value);
-
-	bool isCompressionEnabled();
-	StreamsList_t GetStreams();
+	int32_t GetProtocolVersion();
 };
 
 #endif

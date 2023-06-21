@@ -148,4 +148,5 @@ void RakNetOfflineMessage::FreeMemory()
 	{
 		str.FreeMemory();
 	}
+	this->usedStrings.empty();
 }

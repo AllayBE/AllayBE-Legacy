@@ -3,6 +3,7 @@
 MinecraftPacket::MinecraftPacket()
 {
 	this->serialized = false;
+	this->logger = new Logger("Packet", true);
 }
 
 uint32_t MinecraftPacket::GetID() const

@@ -7,6 +7,7 @@ file(GLOB SOURCE
 	src/misc/*.cpp
 	src/player/*.cpp
 	src/console/*.cpp
+	src/managers/*.cpp
 	src/network/raknet/*.cpp
 	src/network/minecraft/packets/*.cpp
 )

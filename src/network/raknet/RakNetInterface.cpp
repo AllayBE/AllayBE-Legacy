@@ -8,6 +8,7 @@ RakNetInterface::RakNetInterface(SocketDescriptor *descriptor, RakNetOfflineMess
 	this->initialized = false;
 	this->running = false;
 	this->logger = new Logger("RakNet", true);
+	this->packetManager = new PacketManager();
 }
 
 bool RakNetInterface::isInitialized()
@@ -76,6 +77,11 @@ PlayerList_t RakNetInterface::GetPlayerList()
 	return this->playerList;
 }
 
+PacketManager *RakNetInterface::GetPacketManager()
+{
+	return this->packetManager;
+}
+
 void RakNetInterface::UpdatePong()
 {
 	if (!this->running)
@@ -133,7 +139,7 @@ void RakNetInterface::Handle()
 		{
 			if (id != ID_GAME)
 			{
-				this->logger->Debug("Wasnt able to receive the gamepacket and got another packets instead\n");
+				this->logger->Debug("Unable to receive the gamepacket and got another packets instead\n");
 				continue;
 			}
 
@@ -144,16 +150,36 @@ void RakNetInterface::Handle()
 				this->logger->Debug("GamePacket received from, hash=%zu, address=%s\n", hashedAddress, systemAddress.ToString(true));
 
 				GamePacket *packet = new GamePacket();
+				packet->SetCompressionEnabled(player->IsCompressionEnabled());
 				packet->deserialize(stream);
-				// handle
+				this->packetManager->HandleGameStreams(packet->GetStreams(), player);
 			}
 		}
 	}
 }
 
+void RakNetInterface::SendPacket(MinecraftPacket *packet, Player *player, bool force)
+{
+	char *packetBuffer = (char *)rakMalloc_Ex(0, _FILE_AND_LINE_);
+	BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, 0, true);
+	rakFree(packetBuffer);
+	packet->serialize(packetStream);
+
+	char *gamePacketBuffer = (char *)rakMalloc_Ex(0, _FILE_AND_LINE_);
+	BitStream *gamePacketStream = new BitStream((unsigned char *)gamePacketBuffer, 0, true);
+	rakFree(gamePacketBuffer);
+	GamePacket *gamePacket = new GamePacket();
+	gamePacket->SetCompressionEnabled(player->IsCompressionEnabled());
+	gamePacket->SetStreams({packetStream});
+	gamePacket->serialize(gamePacketStream);
+
+	this->peer->Send(gamePacketStream, force == true ? IMMEDIATE_PRIORITY : HIGH_PRIORITY, RELIABLE_ORDERED, 0, player->GetAddress(), false, 0);
+}
+
 void RakNetInterface::FreeMemory()
 {
 	this->playerList.Clear();
+	this->packetManager->GetAll().Clear();
 	this->offlineMessage->FreeMemory();
 }
 

@@ -5,11 +5,15 @@
 #include <console/Logger.h>
 #include <cstdint>
 #include <DS_Map.h>
+#include <managers/PacketManager.h>
 #include <MessageIdentifiers.h>
 #include <network/minecraft/MinecraftVersionDefinitions.h>
 #include <network/minecraft/packets/GamePacket.h>
+#include <network/minecraft/packets/MinecraftPacket.h>
 #include <network/minecraft/packets/PacketDefinitions.h>
+#include <PacketPriority.h>
 #include <player/Player.h>
+#include <RakMemoryOverride.h>
 #include <RakPeerInterface.h>
 #include <string>
 
@@ -24,12 +28,13 @@ class RakNetInterface
 {
 protected:
 	RakPeerInterface *peer;
-	RakNetOfflineMessage *offlineMessage;
 	SocketDescriptor *descriptor;
+	RakNetOfflineMessage *offlineMessage;
 	bool initialized;
 	bool running;
 	PlayerList_t playerList;
 	Logger *logger;
+	PacketManager *packetManager;
 
 public:
 	RakNetInterface(SocketDescriptor *descriptor, RakNetOfflineMessage *offlineMessage);
@@ -39,11 +44,16 @@ public:
 
 	bool Initialize();
 	bool Start();
+
 	void SetMotd(unsigned char *value);
 	void SetSecondMotd(unsigned char *value);
+
 	PlayerList_t GetPlayerList();
+	PacketManager *GetPacketManager();
+
 	void UpdatePong();
 	void Handle();
+	void SendPacket(MinecraftPacket *packet, Player *player, bool force = false);
 	void FreeMemory();
 	void Shutdown();
 

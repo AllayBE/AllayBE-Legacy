@@ -6,6 +6,7 @@
 #include <exceptions/Exceptions.h>
 #include "PacketDefinitions.h"
 #include <misc/BitStreamHelper.h>
+#include <console/Logger.h>
 
 using namespace RakNet;
 
@@ -14,6 +15,9 @@ using namespace RakNet;
 
 class MinecraftPacket
 {
+protected:
+	Logger *logger;
+
 public:
 	bool serialized;
 

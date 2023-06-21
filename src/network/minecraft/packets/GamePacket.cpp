@@ -30,7 +30,6 @@ void GamePacket::deserializeHeader(BitStream *stream)
 	uint8_t receivedID;
 	if (!stream->Read<uint8_t>(receivedID))
 	{
-		printf("Unable to read the packet id of game packet\n");
 		return;
 	}
 	if (receivedID != this->GetID())
@@ -60,16 +59,16 @@ void GamePacket::deserializeBody(BitStream *stream)
 	}
 	rakFree_Ex(remainingBuffer, _FILE_AND_LINE_);
 
-	// for (BitSize_t i = 0; i < BITS_TO_BYTES(dataStream->GetNumberOfUnreadBits()); ++i)
-	// {
-	// 	printf("Index=%d, u8=%d\n", i, (dataStream->GetData()[i] & 0xFF));
-	// }
-
 	while (dataStream->GetNumberOfUnreadBits() > 0)
 	{
 		try
 		{
 			uint32_t packetLength = BitStreamHelper::ReadUnsignedVarInt(dataStream);
+			if (packetLength < 1)
+			{
+				this->streams.push_back(new BitStream(nullptr, 0, false));
+				continue;
+			}
 			char *packetBuffer = (char *)rakMalloc_Ex(packetLength, _FILE_AND_LINE_);
 			dataStream->ReadAlignedBytes((unsigned char *)packetBuffer, packetLength);
 			BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, packetLength, true);
@@ -78,6 +77,7 @@ void GamePacket::deserializeBody(BitStream *stream)
 		}
 		catch (std::runtime_error error)
 		{
+			this->streams.push_back(new BitStream(nullptr, 0, false));
 		}
 	}
 }
@@ -97,4 +97,24 @@ void GamePacket::serializeBody(BitStream *stream)
 			stream->WriteAlignedBytes(packetStream->GetData(), bytesUsed);
 		}
 	}
+}
+
+void GamePacket::SetCompressionEnabled(bool value)
+{
+	this->compressionEnabled = value;
+}
+
+void GamePacket::SetStreams(StreamsList_t value)
+{
+	this->streams = value;
+}
+
+bool GamePacket::isCompressionEnabled()
+{
+	return this->compressionEnabled;
+}
+
+StreamsList_t GamePacket::GetStreams()
+{
+	return this->streams;
 }
