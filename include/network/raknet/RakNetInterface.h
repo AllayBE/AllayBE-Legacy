@@ -9,10 +9,11 @@
 #include <player/Player.h>
 #include <DS_Map.h>
 #include <cstdint>
+#include <string>
 
 using namespace RakNet;
 
-typedef DataStructures::Map<const char *, Player *> PlayerList_t;
+typedef DataStructures::Map<size_t, Player *> PlayerList_t;
 
 #ifndef _RAKNET_INTERFACE
 #define _RAKNET_INTERFACE

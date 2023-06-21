@@ -1,32 +1,30 @@
 #pragma once
 
-#include <misc/BitStreamHelper.h>
+#include "MinecraftPacket.h"
 #include "PacketDefinitions.h"
 #include <exceptions/Exceptions.h>
+#include <misc/BitStreamHelper.h>
 #include <vector>
 
 #ifndef GAME_PACKET_
 #define GAME_PACKET_
 
-class GamePacket
+class GamePacket : public MinecraftPacket
 {
 public:
-	static const uint32_t id;
-	bool serialized;
 	bool compressionEnabled;
 	std::vector<BitStream *> streams;
 
 public:
 	GamePacket();
 
-	void deserialize(BitStream *straem);
-	void serialize(BitStream *straem);
+	virtual uint32_t GetID() override;
 
-	void deserializeHeader(BitStream *stream);
-	void serializeHeader(BitStream *stream);
+	virtual void deserializeHeader(BitStream *stream) override;
+	virtual void serializeHeader(BitStream *stream) override;
 
-	void deserializeBody(BitStream *stream);
-	void serializeBody(BitStream *stream);
+	virtual void deserializeBody(BitStream *stream) override;
+	virtual void serializeBody(BitStream *stream) override;
 };
 
 #endif

@@ -87,6 +87,7 @@ void Logger::Print(const char *logName, const char *logColor, const char *messag
 	localtime_s(&ltn, &currentTime);
 	strftime(_TIME_FMT_PFX_, &ltn);
 #endif
+#undef _TIME_FMT_PFX_
 	printf("%s[%s][%s] -> %s", logColor, timeBuffer, logName, ConsoleColor_White);
 	const char *formattedMessage = this->FormatMessage(message, arguments);
 	if (formattedMessage != nullptr)
@@ -106,7 +107,12 @@ const char *Logger::FormatMessage(const char *message, va_list arguments)
 		index = 0;
 	}
 
-	int length = vsnprintf(value[index], sizeof(value[index]), message, arguments);
+	int length;
+#ifndef _CRT_SECURE_NO_WARNINGS
+	length = vsnprintf(value[index], sizeof(value[index]), message, arguments);
+#else
+	length = _vsnprintf(value[index], sizeof(value[index]), message, arguments);
+#endif
 	if (length < 0 || length >= sizeof(value[index]))
 	{
 		return nullptr;

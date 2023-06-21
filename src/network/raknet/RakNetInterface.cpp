@@ -106,33 +106,35 @@ void RakNetInterface::Handle()
 			return;
 		}
 
+		size_t hashedAddress = std::hash<std::string>{}(packet->systemAddress.ToString(true));
+
 		if (id == ID_NEW_INCOMING_CONNECTION)
 		{
-			if (!this->playerList.Has(packet->systemAddress.ToString(true)))
+			if (!this->playerList.Has(hashedAddress))
 			{
-				this->playerList.SetNew(packet->systemAddress.ToString(true), new Player(packet->systemAddress));
+				this->playerList.SetNew(hashedAddress, new Player(packet->systemAddress));
 				printf("New connection: %s\n", packet->systemAddress.ToString(true));
 			}
 		}
 		else if (id == ID_DISCONNECTION_NOTIFICATION)
 		{
-			if (this->playerList.Has(packet->systemAddress.ToString(true))) // doesnt work for some reason
+			if (this->playerList.Has(hashedAddress))
 			{
-				this->playerList.Delete(packet->systemAddress.ToString(true));
+				this->playerList.Delete(hashedAddress);
+				printf("New disconnection: %s\n", packet->systemAddress.ToString(true));
 			}
-			printf("New disconnection: %s\n", packet->systemAddress.ToString(true));
 		}
 		else if (id == ID_GAME)
 		{
-			// Player *player = this->playerList.Get(packet->systemAddress.ToString(true));
+			if (this->playerList.Has(hashedAddress))
+			{
+				Player *player = this->playerList.Get(hashedAddress);
 
-			// printf("Player IN List: %d\n", player != NULL);
-			// printf("Player IN List - 1: %d\n", player != nullptr);
-
-			// if (player != nullptr)
-			// {
-			// 	printf("GamePacket Recieved From: %s\n", packet->systemAddress.ToString(true));
-			// }
+				if (player != nullptr)
+				{
+					printf("GamePacket Recieved From: %s\n", packet->systemAddress.ToString(true));
+				}
+			}
 		}
 	}
 }

@@ -1,26 +1,13 @@
 #include <network/minecraft/packets/GamePacket.h>
 
-const uint32_t GamePacket::id = ID_GAME;
-
 GamePacket::GamePacket()
 {
-	this->serialized = false;
 	this->compressionEnabled = false;
 }
 
-void GamePacket::deserialize(BitStream *stream)
+uint32_t GamePacket::GetID()
 {
-	stream->ResetReadPointer();
-	this->deserializeHeader(stream);
-	this->deserializeBody(stream);
-}
-
-void GamePacket::serialize(BitStream *stream)
-{
-	stream->Reset();
-	this->serializeHeader(stream);
-	this->serializeBody(stream);
-	this->serialized = true;
+	return ID_GAME;
 }
 
 void GamePacket::deserializeHeader(BitStream *stream)
@@ -31,7 +18,7 @@ void GamePacket::deserializeHeader(BitStream *stream)
 		printf("Unable to read the packet id of game packet\n");
 		return;
 	}
-	if (receivedID != this->id)
+	if (receivedID != this->GetID())
 	{
 		throw InvalidPacketIDException("Invalid PacketID received");
 	}
@@ -39,7 +26,7 @@ void GamePacket::deserializeHeader(BitStream *stream)
 
 void GamePacket::serializeHeader(BitStream *stream)
 {
-	stream->Write<uint8_t>(this->id);
+	stream->Write<uint8_t>(this->GetID());
 }
 
 void GamePacket::deserializeBody(BitStream *stream)

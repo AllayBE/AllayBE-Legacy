@@ -15,20 +15,21 @@ using namespace RakNet;
 class MinecraftPacket
 {
 public:
-	static const uint32_t id;
 	bool serialized;
 
 public:
 	MinecraftPacket();
 
-	void deserialize(BitStream *straem);
-	void serialize(BitStream *straem);
+	virtual uint32_t GetID() = 0;
 
-	void deserializeHeader(BitStream *stream);
-	void serializeHeader(BitStream *stream);
+	virtual void deserialize(BitStream *straem) = 0;
+	virtual void serialize(BitStream *straem) = 0;
 
-	void deserializeBody(BitStream *stream);
-	void serializeBody(BitStream *stream);
+	virtual void deserializeHeader(BitStream *stream) = 0;
+	virtual void serializeHeader(BitStream *stream) = 0;
+
+	virtual void deserializeBody(BitStream *stream) = 0;
+	virtual void serializeBody(BitStream *stream) = 0;
 };
 
 #endif
