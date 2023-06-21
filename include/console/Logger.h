@@ -27,7 +27,7 @@ public:
 	void Success(const char *message, ...);
 	void Warning(const char *message, ...);
 
-	void Print(const char *logName, const char *logColor, const char *message, va_list arguments);
+	void Print(const char *logMode, const char *logColor, const char *message, va_list arguments);
 	const char *FormatMessage(const char *message, va_list arguments);
 };
 

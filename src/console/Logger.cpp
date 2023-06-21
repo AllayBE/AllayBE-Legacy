@@ -73,7 +73,7 @@ void Logger::Warning(const char *message, ...)
 	va_end(arguments);
 }
 
-void Logger::Print(const char *logName, const char *logColor, const char *message, va_list arguments)
+void Logger::Print(const char *logMode, const char *logColor, const char *message, va_list arguments)
 {
 	const time_t currentTime = time(NULL);
 	char timeBuffer[146];
@@ -88,7 +88,7 @@ void Logger::Print(const char *logName, const char *logColor, const char *messag
 	strftime(_TIME_FMT_PFX_, &ltn);
 #endif
 #undef _TIME_FMT_PFX_
-	printf("%s[%s][%s] -> %s", logColor, timeBuffer, logName, ConsoleColor_White);
+	printf("%s[%s][%s: %s] -> %s", logColor, timeBuffer, this->name, logMode, ConsoleColor_White);
 	const char *formattedMessage = this->FormatMessage(message, arguments);
 	if (formattedMessage != nullptr)
 	{
