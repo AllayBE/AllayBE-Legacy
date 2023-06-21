@@ -18,7 +18,10 @@ public:
 public:
 	GamePacket();
 
-	virtual uint32_t GetID() override;
+	virtual uint32_t GetID() const override;
+
+	virtual void deserialize(BitStream *straem) override;
+	virtual void serialize(BitStream *straem) override;
 
 	virtual void deserializeHeader(BitStream *stream) override;
 	virtual void serializeHeader(BitStream *stream) override;

@@ -20,7 +20,7 @@ public:
 public:
 	MinecraftPacket();
 
-	virtual uint32_t GetID() = 0;
+	virtual uint32_t GetID() const = 0;
 
 	virtual void deserialize(BitStream *straem) = 0;
 	virtual void serialize(BitStream *straem) = 0;

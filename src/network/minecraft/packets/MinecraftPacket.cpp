@@ -5,7 +5,7 @@ MinecraftPacket::MinecraftPacket()
 	this->serialized = false;
 }
 
-uint32_t MinecraftPacket::GetID()
+uint32_t MinecraftPacket::GetID() const
 {
 	return ID_NONE;
 }

@@ -1,14 +1,16 @@
 #pragma once
 
-#include <RakPeerInterface.h>
 #include "RakNetOfflineMessage.h"
-#include <network/minecraft/MinecraftVersionDefinitions.h>
 #include <BitStream.h>
+#include <console/Logger.h>
+#include <cstdint>
+#include <DS_Map.h>
 #include <MessageIdentifiers.h>
+#include <network/minecraft/MinecraftVersionDefinitions.h>
+#include <network/minecraft/packets/GamePacket.h>
 #include <network/minecraft/packets/PacketDefinitions.h>
 #include <player/Player.h>
-#include <DS_Map.h>
-#include <cstdint>
+#include <RakPeerInterface.h>
 #include <string>
 
 using namespace RakNet;
@@ -27,6 +29,7 @@ protected:
 	bool initialized;
 	bool running;
 	PlayerList_t playerList;
+	Logger *logger;
 
 public:
 	RakNetInterface(SocketDescriptor *descriptor, RakNetOfflineMessage *offlineMessage);

@@ -7,6 +7,7 @@ RakNetInterface::RakNetInterface(SocketDescriptor *descriptor, RakNetOfflineMess
 	this->offlineMessage = offlineMessage;
 	this->initialized = false;
 	this->running = false;
+	this->logger = new Logger("RakNet", true);
 }
 
 bool RakNetInterface::isInitialized()
@@ -106,34 +107,44 @@ void RakNetInterface::Handle()
 			return;
 		}
 
-		size_t hashedAddress = std::hash<std::string>{}(packet->systemAddress.ToString(true));
+		SystemAddress systemAddress = packet->systemAddress;
+		size_t hashedAddress = std::hash<std::string>{}(systemAddress.ToString(true));
 
-		if (id == ID_NEW_INCOMING_CONNECTION)
+		if (id < ID_USER_PACKET_ENUM)
 		{
-			if (!this->playerList.Has(hashedAddress))
+			if (id == ID_NEW_INCOMING_CONNECTION)
 			{
-				this->playerList.SetNew(hashedAddress, new Player(packet->systemAddress));
-				printf("New connection: %s\n", packet->systemAddress.ToString(true));
-			}
-		}
-		else if (id == ID_DISCONNECTION_NOTIFICATION)
-		{
-			if (this->playerList.Has(hashedAddress))
-			{
-				this->playerList.Delete(hashedAddress);
-				printf("New disconnection: %s\n", packet->systemAddress.ToString(true));
-			}
-		}
-		else if (id == ID_GAME)
-		{
-			if (this->playerList.Has(hashedAddress))
-			{
-				Player *player = this->playerList.Get(hashedAddress);
-
-				if (player != nullptr)
+				if (!this->playerList.Has(hashedAddress))
 				{
-					printf("GamePacket Recieved From: %s\n", packet->systemAddress.ToString(true));
+					this->logger->Debug("New incoming connection, hash=%zu, address=%s\n", hashedAddress, systemAddress.ToString(true));
+					this->playerList.SetNew(hashedAddress, new Player(systemAddress));
 				}
+			}
+			else if (id == ID_DISCONNECTION_NOTIFICATION)
+			{
+				if (this->playerList.Has(hashedAddress))
+				{
+					this->logger->Debug("Disconnection received, hash=%zu, address=%s\n", hashedAddress, systemAddress.ToString(true));
+					this->playerList.Delete(hashedAddress);
+				}
+			}
+		}
+		else if (this->playerList.Has(hashedAddress))
+		{
+			if (id != ID_GAME)
+			{
+				this->logger->Debug("Wasnt able to receive the gamepacket and got another packets instead\n");
+				continue;
+			}
+
+			Player *player = this->playerList.Get(hashedAddress);
+
+			if (player != nullptr)
+			{
+				this->logger->Debug("GamePacket received from, hash=%zu, address=%s\n", hashedAddress, systemAddress.ToString(true));
+
+				// GamePacket *packet = new GamePacket();
+				// packet->deserialize(stream);
 			}
 		}
 	}

@@ -5,9 +5,24 @@ GamePacket::GamePacket()
 	this->compressionEnabled = false;
 }
 
-uint32_t GamePacket::GetID()
+uint32_t GamePacket::GetID() const
 {
 	return ID_GAME;
+}
+
+void GamePacket::deserialize(BitStream *stream)
+{
+	stream->ResetReadPointer();
+	this->deserializeHeader(stream);
+	this->deserializeBody(stream);
+}
+
+void GamePacket::serialize(BitStream *stream)
+{
+	stream->Reset();
+	this->serializeHeader(stream);
+	this->serializeBody(stream);
+	this->serialized = true;
 }
 
 void GamePacket::deserializeHeader(BitStream *stream)
@@ -45,7 +60,7 @@ void GamePacket::deserializeBody(BitStream *stream)
 	}
 	rakFree_Ex(remainingBuffer, _FILE_AND_LINE_);
 
-	while (dataStream->GetReadOffset() < unreadBytes) // TODO: Check this
+	while (dataStream->GetNumberOfUnreadBits() > 0)
 	{
 		uint32_t packetLength = BitStreamHelper::ReadUnsignedVarInt(dataStream);
 		char *packetBuffer = (char *)rakMalloc_Ex(packetLength, _FILE_AND_LINE_);
