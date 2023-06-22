@@ -6,9 +6,6 @@
 #include <string>
 #include <colors/ConsoleColors.h>
 
-#ifndef LOGGER_
-#define LOGGER_
-
 class Logger
 {
 protected:
@@ -30,5 +27,3 @@ public:
 	void Print(const char *logMode, const char *logColor, const char *message, va_list arguments);
 	const char *FormatMessage(const char *message, va_list arguments);
 };
-
-#endif

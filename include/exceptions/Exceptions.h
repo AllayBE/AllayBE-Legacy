@@ -3,9 +3,6 @@
 #include <stdexcept>
 #include <string>
 
-#ifndef EXCEPTIONS_
-#define EXCEPTIONS_
-
 class InvalidPacketIDException : public std::exception
 {
 private:
@@ -20,5 +17,3 @@ public:
 		return _Message.c_str();
 	}
 };
-
-#endif

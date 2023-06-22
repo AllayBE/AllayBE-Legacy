@@ -8,9 +8,6 @@
 
 using namespace RakNet;
 
-#ifndef _RAKNET_OFFLINE_MESSAGE
-#define _RAKNET_OFFLINE_MESSAGE
-
 class RakNetOfflineMessage
 {
 protected:
@@ -71,5 +68,3 @@ public:
 	RakString ToString();
 	void FreeMemory();
 };
-
-#endif

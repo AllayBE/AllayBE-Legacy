@@ -3,26 +3,16 @@
 #include "RakNetOfflineMessage.h"
 #include <BitStream.h>
 #include <console/Logger.h>
-#include <cstdint>
-#include <DS_Map.h>
 #include <managers/PacketManager.h>
+#include <managers/PlayerManager.h>
 #include <MessageIdentifiers.h>
 #include <network/minecraft/MinecraftVersionDefinitions.h>
 #include <network/minecraft/packets/GamePacket.h>
 #include <network/minecraft/packets/MinecraftPacket.h>
 #include <network/minecraft/packets/PacketDefinitions.h>
-#include <PacketPriority.h>
-#include <player/Player.h>
-#include <RakMemoryOverride.h>
 #include <RakPeerInterface.h>
-#include <string>
 
 using namespace RakNet;
-
-typedef DataStructures::Map<size_t, Player *> PlayerList_t;
-
-#ifndef _RAKNET_INTERFACE
-#define _RAKNET_INTERFACE
 
 class RakNetInterface
 {
@@ -32,9 +22,9 @@ protected:
 	RakNetOfflineMessage *offlineMessage;
 	bool initialized;
 	bool running;
-	PlayerList_t playerList;
 	Logger *logger;
 	PacketManager *packetManager;
+	PlayerManager *playerManager;
 
 public:
 	RakNetInterface(SocketDescriptor *descriptor, RakNetOfflineMessage *offlineMessage);
@@ -48,17 +38,14 @@ public:
 	void SetMotd(unsigned char *value);
 	void SetSecondMotd(unsigned char *value);
 
-	PlayerList_t GetPlayerList();
+	PlayerManager *GetPlayerManager();
 	PacketManager *GetPacketManager();
 
 	void UpdatePong();
 	void Handle();
-	void SendPacket(MinecraftPacket *packet, Player *player, bool force = false);
 	void FreeMemory();
 	void Shutdown();
 
 	uint64_t Generate64BitUnqiueNumber();
 	uint32_t Generate32BitUnqiueNumber();
 };
-
-#endif

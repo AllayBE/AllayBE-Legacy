@@ -10,7 +10,7 @@ void Logger::Alert(const char *message, ...)
 {
 	va_list arguments;
 	va_start(arguments, message);
-	this->Print("Alert", ConsoleColor_Light_Blue, message, arguments);
+	this->Print("Alert", ConsoleColors::LightBlue(), message, arguments);
 	va_end(arguments);
 }
 
@@ -18,7 +18,7 @@ void Logger::Critical(const char *message, ...)
 {
 	va_list arguments;
 	va_start(arguments, message);
-	this->Print("Critical", ConsoleColor_Light_Red, message, arguments);
+	this->Print("Critical", ConsoleColors::LightRed(), message, arguments);
 	va_end(arguments);
 }
 
@@ -28,7 +28,7 @@ void Logger::Debug(const char *message, ...)
 	{
 		va_list arguments;
 		va_start(arguments, message);
-		this->Print("Debug", ConsoleColor_Gray, message, arguments);
+		this->Print("Debug", ConsoleColors::Gray(), message, arguments);
 		va_end(arguments);
 	}
 }
@@ -37,7 +37,7 @@ void Logger::Error(const char *message, ...)
 {
 	va_list arguments;
 	va_start(arguments, message);
-	this->Print("Error", ConsoleColor_Dark_Red, message, arguments);
+	this->Print("Error", ConsoleColors::DarkRed(), message, arguments);
 	va_end(arguments);
 }
 
@@ -45,7 +45,7 @@ void Logger::Fail(const char *message, ...)
 {
 	va_list arguments;
 	va_start(arguments, message);
-	this->Print("Fail", ConsoleColor_Light_Red, message, arguments);
+	this->Print("Fail", ConsoleColors::DarkRed(), message, arguments);
 	va_end(arguments);
 }
 
@@ -53,7 +53,7 @@ void Logger::Info(const char *message, ...)
 {
 	va_list arguments;
 	va_start(arguments, message);
-	this->Print("Info", ConsoleColor_Orange, message, arguments);
+	this->Print("Info", ConsoleColors::Orange(), message, arguments);
 	va_end(arguments);
 }
 
@@ -61,7 +61,7 @@ void Logger::Success(const char *message, ...)
 {
 	va_list arguments;
 	va_start(arguments, message);
-	this->Print("Success", ConsoleColor_Light_Green, message, arguments);
+	this->Print("Success", ConsoleColors::LightGreen(), message, arguments);
 	va_end(arguments);
 }
 
@@ -69,7 +69,7 @@ void Logger::Warning(const char *message, ...)
 {
 	va_list arguments;
 	va_start(arguments, message);
-	this->Print("Warning", ConsoleColor_Yellow, message, arguments);
+	this->Print("Warning", ConsoleColors::Yellow(), message, arguments);
 	va_end(arguments);
 }
 
@@ -88,13 +88,13 @@ void Logger::Print(const char *logMode, const char *logColor, const char *messag
 	strftime(_TIME_FMT_PFX_, &ltn);
 #endif
 #undef _TIME_FMT_PFX_
-	printf("%s[%s][%s: %s] -> %s", logColor, timeBuffer, this->name, logMode, ConsoleColor_White);
+	printf("%s[%s][%s: %s] -> %s%s", logColor, timeBuffer, this->name, logMode, ConsoleColors::Reset(), ConsoleColors::White());
 	const char *formattedMessage = this->FormatMessage(message, arguments);
 	if (formattedMessage != nullptr)
 	{
 		printf(formattedMessage);
 	}
-	printf(ConsoleColor_Reset);
+	printf(ConsoleColors::Reset());
 }
 
 const char *Logger::FormatMessage(const char *message, va_list arguments)

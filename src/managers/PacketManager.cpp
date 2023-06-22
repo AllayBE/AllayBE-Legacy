@@ -2,6 +2,8 @@
 
 PacketManager::PacketManager()
 {
+	this->packetsHandlerManager = new PacketsHandlerManager();
+
 	this->Add(ID_REQUEST_NETWORK_SETTINGS, new RequestNetworkSettingsPacket());
 }
 
@@ -42,7 +44,12 @@ PacketList_t PacketManager::GetAll()
 	return this->list;
 }
 
-void PacketManager::HandleGameStreams(StreamsList_t streams, Player *player)
+PacketsHandlerManager *PacketManager::GetPacketsHandlerManager()
+{
+	return this->packetsHandlerManager;
+}
+
+void PacketManager::HandleGameStreams(StreamList_t streams, Player *player)
 {
 	for (const auto &stream : streams)
 	{
@@ -57,12 +64,11 @@ void PacketManager::HandleGameStreams(StreamsList_t streams, Player *player)
 			{
 				MinecraftPacket *packet = this->Get(id);
 				packet->deserialize(stream);
+				PacketHandler *handler = this->packetsHandlerManager->Get(id);
 
-				// TODO: Do a proper packet handling
-				if (packet->GetID() == ID_REQUEST_NETWORK_SETTINGS)
+				if (handler != nullptr)
 				{
-					RequestNetworkSettingsPacket *requestNetworkSettings = (RequestNetworkSettingsPacket *)packet;
-					printf("Protocol version: %d\n", requestNetworkSettings->GetProtocolVersion());
+					handler->processPacket(packet, player);
 				}
 			}
 		}

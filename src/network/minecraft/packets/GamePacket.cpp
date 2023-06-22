@@ -10,21 +10,6 @@ uint32_t GamePacket::GetID() const
 	return ID_GAME;
 }
 
-void GamePacket::deserialize(BitStream *stream)
-{
-	stream->ResetReadPointer();
-	this->deserializeHeader(stream);
-	this->deserializeBody(stream);
-}
-
-void GamePacket::serialize(BitStream *stream)
-{
-	stream->Reset();
-	this->serializeHeader(stream);
-	this->serializeBody(stream);
-	this->serialized = true;
-}
-
 void GamePacket::deserializeHeader(BitStream *stream)
 {
 	uint8_t receivedID;
@@ -43,12 +28,16 @@ void GamePacket::serializeHeader(BitStream *stream)
 	stream->Write<uint8_t>(this->GetID());
 }
 
-void GamePacket::deserializeBody(BitStream *stream)
+// TODO: This is expiremntal
+bool GamePacket::deserializeBody(BitStream *stream)
 {
 	BitStream *dataStream;
 	BitSize_t unreadBytes = BITS_TO_BYTES(stream->GetNumberOfUnreadBits());
 	char *remainingBuffer = (char *)rakMalloc_Ex(unreadBytes, _FILE_AND_LINE_);
-	stream->ReadAlignedBytes((unsigned char *)remainingBuffer, unreadBytes);
+	if (!stream->ReadAlignedBytes((unsigned char *)remainingBuffer, unreadBytes))
+	{
+		return false;
+	}
 
 	if (this->compressionEnabled)
 	{
@@ -70,9 +59,13 @@ void GamePacket::deserializeBody(BitStream *stream)
 				continue;
 			}
 			char *packetBuffer = (char *)rakMalloc_Ex(packetLength, _FILE_AND_LINE_);
-			dataStream->ReadAlignedBytes((unsigned char *)packetBuffer, packetLength);
+			if (!dataStream->ReadAlignedBytes((unsigned char *)packetBuffer, packetLength))
+			{
+				continue;
+			}
 			BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, packetLength, true);
 			rakFree_Ex(packetBuffer, _FILE_AND_LINE_);
+
 			this->streams.push_back(packetStream);
 		}
 		catch (std::runtime_error error)
@@ -80,6 +73,7 @@ void GamePacket::deserializeBody(BitStream *stream)
 			this->streams.push_back(new BitStream(nullptr, 0, false));
 		}
 	}
+	return true;
 }
 
 void GamePacket::serializeBody(BitStream *stream)
@@ -104,7 +98,7 @@ void GamePacket::SetCompressionEnabled(bool value)
 	this->compressionEnabled = value;
 }
 
-void GamePacket::SetStreams(StreamsList_t value)
+void GamePacket::SetStreams(StreamList_t value)
 {
 	this->streams = value;
 }
@@ -114,7 +108,7 @@ bool GamePacket::isCompressionEnabled()
 	return this->compressionEnabled;
 }
 
-StreamsList_t GamePacket::GetStreams()
+StreamList_t GamePacket::GetStreams()
 {
 	return this->streams;
 }

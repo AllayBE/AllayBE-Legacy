@@ -9,6 +9,7 @@ RakNetInterface::RakNetInterface(SocketDescriptor *descriptor, RakNetOfflineMess
 	this->running = false;
 	this->logger = new Logger("RakNet", true);
 	this->packetManager = new PacketManager();
+	this->playerManager = new PlayerManager();
 }
 
 bool RakNetInterface::isInitialized()
@@ -72,9 +73,9 @@ void RakNetInterface::SetSecondMotd(unsigned char *value)
 	this->offlineMessage->SetSecondMotd(value);
 }
 
-PlayerList_t RakNetInterface::GetPlayerList()
+PlayerManager *RakNetInterface::GetPlayerManager()
 {
-	return this->playerList;
+	return this->playerManager;
 }
 
 PacketManager *RakNetInterface::GetPacketManager()
@@ -89,7 +90,7 @@ void RakNetInterface::UpdatePong()
 		return;
 	}
 
-	unsigned int playerListSize = this->playerList.Size();
+	unsigned int playerListSize = this->playerManager->GetAll().Size();
 	if (this->offlineMessage->GetOnlinePlayers() != playerListSize)
 	{
 		this->offlineMessage->SetOnlinePlayers(playerListSize);
@@ -114,28 +115,26 @@ void RakNetInterface::Handle()
 		}
 
 		SystemAddress systemAddress = packet->systemAddress;
-		size_t hashedAddress = std::hash<std::string>{}(systemAddress.ToString(true));
+		size_t hashedAddress = this->playerManager->HashAddress(systemAddress.ToString(true));
 
 		if (id < ID_USER_PACKET_ENUM)
 		{
 			if (id == ID_NEW_INCOMING_CONNECTION)
 			{
-				if (!this->playerList.Has(hashedAddress))
+				if (this->playerManager->Add(systemAddress, this->peer))
 				{
 					this->logger->Debug("New incoming connection, hash=%zu, address=%s\n", hashedAddress, systemAddress.ToString(true));
-					this->playerList.SetNew(hashedAddress, new Player(systemAddress));
 				}
 			}
 			else if (id == ID_DISCONNECTION_NOTIFICATION)
 			{
-				if (this->playerList.Has(hashedAddress))
+				if (this->playerManager->Remove(hashedAddress))
 				{
 					this->logger->Debug("Disconnection received, hash=%zu, address=%s\n", hashedAddress, systemAddress.ToString(true));
-					this->playerList.Delete(hashedAddress);
 				}
 			}
 		}
-		else if (this->playerList.Has(hashedAddress))
+		else if (this->playerManager->Has(hashedAddress))
 		{
 			if (id != ID_GAME)
 			{
@@ -143,7 +142,7 @@ void RakNetInterface::Handle()
 				continue;
 			}
 
-			Player *player = this->playerList.Get(hashedAddress);
+			Player *player = this->playerManager->Get(hashedAddress);
 
 			if (player != nullptr)
 			{
@@ -158,28 +157,11 @@ void RakNetInterface::Handle()
 	}
 }
 
-void RakNetInterface::SendPacket(MinecraftPacket *packet, Player *player, bool force)
-{
-	char *packetBuffer = (char *)rakMalloc_Ex(0, _FILE_AND_LINE_);
-	BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, 0, true);
-	rakFree(packetBuffer);
-	packet->serialize(packetStream);
-
-	char *gamePacketBuffer = (char *)rakMalloc_Ex(0, _FILE_AND_LINE_);
-	BitStream *gamePacketStream = new BitStream((unsigned char *)gamePacketBuffer, 0, true);
-	rakFree(gamePacketBuffer);
-	GamePacket *gamePacket = new GamePacket();
-	gamePacket->SetCompressionEnabled(player->IsCompressionEnabled());
-	gamePacket->SetStreams({packetStream});
-	gamePacket->serialize(gamePacketStream);
-
-	this->peer->Send(gamePacketStream, force == true ? IMMEDIATE_PRIORITY : HIGH_PRIORITY, RELIABLE_ORDERED, 0, player->GetAddress(), false, 0);
-}
-
 void RakNetInterface::FreeMemory()
 {
-	this->playerList.Clear();
+	this->playerManager->GetAll().Clear();
 	this->packetManager->GetAll().Clear();
+	this->packetManager->GetPacketsHandlerManager()->GetAll().Clear();
 	this->offlineMessage->FreeMemory();
 }
 

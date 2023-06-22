@@ -1,21 +1,75 @@
 #pragma once
 
-#ifndef CONSOLE_COLORS_
-#define CONSOLE_COLORS_
+class ConsoleColors
+{
+public:
+	static const char *LightBlue()
+	{
+		return "\x1b[94m";
+	}
 
-#define ConsoleColor_Light_Blue "\x1b[94m"
-#define ConsoleColor_Dark_Blue "\x1b[34m"
-#define ConsoleColor_Aqua "\x1b[96m"
-#define ConsoleColor_Dark_Green "\x1b[32m"
-#define ConsoleColor_Light_Green "\x1b[92m"
-#define ConsoleColor_Light_Red "\x1b[91m"
-#define ConsoleColor_Dark_Red "\x1b[31m"
-#define ConsoleColor_Pink "\x1b[95m"
-#define ConsoleColor_Purple "\x1b[35m"
-#define ConsoleColor_White "\x1b[0m\x1b[37m"
-#define ConsoleColor_Reset "\x1b[0m"
-#define ConsoleColor_Gray "\x1b[90m"
-#define ConsoleColor_Yellow "\x1b[33m"
-#define ConsoleColor_Orange "\x1b[38;5;202m"
+	static const char *DarkBlue()
+	{
+		return "\x1b[34m";
+	}
 
-#endif
+	static const char *Aqua()
+	{
+		return "\x1b[96m";
+	}
+
+	static const char *DarkGreen()
+	{
+		return "\x1b[32m";
+	}
+
+	static const char *LightGreen()
+	{
+		return "\x1b[92m";
+	}
+
+	static const char *LightRed()
+	{
+		return "\x1b[91m";
+	}
+
+	static const char *DarkRed()
+	{
+		return "\x1b[31m";
+	}
+
+	static const char *Pink()
+	{
+		return "\x1b[95m";
+	}
+
+	static const char *Purple()
+	{
+		return "\x1b[35m";
+	}
+
+	static const char *White()
+	{
+		return "\x1b[37m";
+	}
+
+	static const char *Reset()
+	{
+		return "\x1b[0m";
+	}
+
+	static const char *Gray()
+	{
+		return "\x1b[90m";
+	}
+
+	static const char *Yellow()
+	{
+		return "\x1b[33m";
+	}
+
+	static const char *Orange()
+	{
+		return "\x1b[38;5;202m";
+	}
+};

@@ -7,9 +7,6 @@
 #include <network/raknet/RakNetOfflineMessage.h>
 #include <RakThread.h>
 
-#ifndef SERVER_
-#define SERVER_
-
 class Server
 {
 protected:
@@ -27,5 +24,3 @@ public:
 	Logger *GetLogger();
 	RakNetInterface *GetRakNetInterface();
 };
-
-#endif

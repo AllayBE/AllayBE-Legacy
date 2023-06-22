@@ -10,6 +10,7 @@ file(GLOB SOURCE
 	src/managers/*.cpp
 	src/network/raknet/*.cpp
 	src/network/minecraft/packets/*.cpp
+	src/network/minecraft/handlers/*.cpp
 )
 
 set(SOURCE_FILES ${SOURCE})
