@@ -31,7 +31,7 @@ public:
 		{
 			return false;
 		}
-		stream->ReverseBytes(output, (unsigned char *)&value, sizeof(2));
+		stream->ReverseBytes(output, (unsigned char *)&value, sizeof(T));
 		return true;
 	};
 };
