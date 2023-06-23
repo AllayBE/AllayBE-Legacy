@@ -12,19 +12,14 @@ using namespace RakNet;
 class MinecraftPacket
 {
 public:
-	bool serialized;
-
-public:
-	MinecraftPacket();
-
 	virtual uint32_t GetID() const = 0;
 
-	void deserialize(BitStream *straem);
-	void serialize(BitStream *straem);
+	void Deserialize(BitStream *straem);
+	void Serialize(BitStream *straem);
 
-	virtual void deserializeHeader(BitStream *stream) = 0;
-	virtual void serializeHeader(BitStream *stream) = 0;
+	virtual void DeserializeHeader(BitStream *stream) = 0;
+	virtual void SerializeHeader(BitStream *stream) = 0;
 
-	virtual bool deserializeBody(BitStream *stream) = 0;
-	virtual void serializeBody(BitStream *stream) = 0;
+	virtual bool DeserializeBody(BitStream *stream) = 0;
+	virtual void SerializeBody(BitStream *stream) = 0;
 };

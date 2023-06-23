@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DS_Map.h>
+#include <network/minecraft/handlers/LoginPacketHandler.h>
 #include <network/minecraft/handlers/PacketHandler.h>
 #include <network/minecraft/handlers/RequestNetworkSettingsPacketHandler.h>
 

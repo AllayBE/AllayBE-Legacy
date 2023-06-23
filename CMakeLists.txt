@@ -18,8 +18,13 @@ set(SOURCE_FILES ${SOURCE})
 add_executable(AllayBE ${SOURCE_FILES})
 
 add_subdirectory(RakNet)
+add_subdirectory(libdeflate)
 
 include_directories(RakNet/Source)
+include_directories(libdeflate)
 include_directories(include)
 
-target_link_libraries(AllayBE PRIVATE RakNetLibStatic)
+target_link_libraries(AllayBE PRIVATE
+	RakNetLibStatic
+	libdeflate_static
+)

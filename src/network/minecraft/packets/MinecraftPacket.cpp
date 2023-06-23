@@ -1,31 +1,25 @@
 #include <network/minecraft/packets/MinecraftPacket.h>
 
-MinecraftPacket::MinecraftPacket()
-{
-	this->serialized = false;
-}
-
 uint32_t MinecraftPacket::GetID() const
 {
 	return ID_NONE;
 }
 
-void MinecraftPacket::deserialize(BitStream *stream)
+void MinecraftPacket::Deserialize(BitStream *stream)
 {
 	stream->ResetReadPointer();
-	this->deserializeHeader(stream);
-	this->deserializeBody(stream);
+	this->DeserializeHeader(stream);
+	this->DeserializeBody(stream);
 }
 
-void MinecraftPacket::serialize(BitStream *stream)
+void MinecraftPacket::Serialize(BitStream *stream)
 {
 	stream->Reset();
-	this->serializeHeader(stream);
-	this->serializeBody(stream);
-	this->serialized = true;
+	this->SerializeHeader(stream);
+	this->SerializeBody(stream);
 }
 
-void MinecraftPacket::deserializeHeader(BitStream *stream)
+void MinecraftPacket::DeserializeHeader(BitStream *stream)
 {
 	uint32_t receivedID = BitStreamHelper::ReadUnsignedVarInt(stream);
 	if (receivedID != this->GetID())
@@ -34,7 +28,7 @@ void MinecraftPacket::deserializeHeader(BitStream *stream)
 	}
 }
 
-void MinecraftPacket::serializeHeader(BitStream *stream)
+void MinecraftPacket::SerializeHeader(BitStream *stream)
 {
 	BitStreamHelper::WriteUnsignedVarInt(this->GetID(), stream);
 }

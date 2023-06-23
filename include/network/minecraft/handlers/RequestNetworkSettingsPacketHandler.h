@@ -5,5 +5,5 @@
 class RequestNetworkSettingsPacketHandler : public PacketHandler
 {
 public:
-	virtual bool processPacket(MinecraftPacket *normalPacket, Player *player) override;
+	virtual bool ProcessPacket(MinecraftPacket *normalPacket, Player *player) override;
 };

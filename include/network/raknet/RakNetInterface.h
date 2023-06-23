@@ -35,8 +35,8 @@ public:
 	bool Initialize();
 	bool Start();
 
-	void SetMotd(unsigned char *value);
-	void SetSecondMotd(unsigned char *value);
+	void SetMotd(char *value);
+	void SetSecondMotd(char *value);
 
 	PlayerManager *GetPlayerManager();
 	PacketManager *GetPacketManager();

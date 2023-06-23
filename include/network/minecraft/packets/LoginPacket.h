@@ -1,11 +1,13 @@
 #pragma once
 
 #include "MinecraftPacket.h"
+#include <network/minecraft/structs/LoginTokens.h>
 
-class RequestNetworkSettingsPacket : public MinecraftPacket
+class LoginPacket : public MinecraftPacket
 {
 protected:
 	int32_t protocolVersion;
+	LoginTokens loginTokens;
 
 public:
 	virtual uint32_t GetID() const override;
@@ -17,6 +19,8 @@ public:
 	virtual void SerializeBody(BitStream *stream) override;
 
 	void SetProtocolVersion(int32_t value);
+	void SetLoginTokens(LoginTokens value);
 
 	int32_t GetProtocolVersion();
+	LoginTokens GetLoginTokens();
 };

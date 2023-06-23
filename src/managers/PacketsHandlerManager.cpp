@@ -3,6 +3,7 @@
 PacketsHandlerManager::PacketsHandlerManager()
 {
 	this->Add(ID_REQUEST_NETWORK_SETTINGS, new RequestNetworkSettingsPacketHandler());
+	this->Add(ID_LOGIN, new LoginPacketHandler());
 }
 
 bool PacketsHandlerManager::Add(uint32_t id, PacketHandler *handler)

@@ -3,6 +3,9 @@
 enum PacketDefinitions
 {
 	ID_NONE,
+	ID_LOGIN,
+	ID_PLAY_STATUS,
+	ID_NETWORK_SETTINGS = 0x8f,
 	ID_REQUEST_NETWORK_SETTINGS = 0xc1,
 	ID_GAME = 0xFE
 };

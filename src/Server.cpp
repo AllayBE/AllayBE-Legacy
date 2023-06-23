@@ -5,15 +5,15 @@ Server::Server()
 	this->logger = new Logger("Server", false);
 	SocketDescriptor *descriptor = new SocketDescriptor(19132, "0.0.0.0");
 	RakNetOfflineMessage *offlineMessage = new RakNetOfflineMessage(
-		(const unsigned char *)"MCPE",
-		(unsigned char *)"AllayBE Motd",
+		"MCPE",
+		"AllayBE Motd",
 		MINECRAFT_PROTOCOL_VERSION,
-		(const unsigned char *)MINECRAFT_VERSION,
+		MINECRAFT_VERSION,
 		0,
 		10,
 		this->rakNetInterface->Generate64BitUnqiueNumber(),
-		(unsigned char *)"AllayBE SubMotd",
-		(const unsigned char *)"Creative"
+		"AllayBE SubMotd",
+		"Creative"
 	);
 	this->rakNetInterface = new RakNetInterface(descriptor, offlineMessage);
 	this->rakNetInterface->Initialize();

@@ -53,7 +53,7 @@ bool RakNetInterface::Start()
 	return true;
 }
 
-void RakNetInterface::SetMotd(unsigned char *value)
+void RakNetInterface::SetMotd(char *value)
 {
 	if (!this->initialized)
 	{
@@ -63,7 +63,7 @@ void RakNetInterface::SetMotd(unsigned char *value)
 	this->offlineMessage->SetMotd(value);
 }
 
-void RakNetInterface::SetSecondMotd(unsigned char *value)
+void RakNetInterface::SetSecondMotd(char *value)
 {
 	if (!this->initialized)
 	{
@@ -138,7 +138,7 @@ void RakNetInterface::Handle()
 		{
 			if (id != ID_GAME)
 			{
-				this->logger->Debug("Unable to receive the gamepacket and got another packets instead\n");
+				this->logger->Debug("Unable to receive the gamepacket and got another packet instead\n");
 				continue;
 			}
 
@@ -150,7 +150,7 @@ void RakNetInterface::Handle()
 
 				GamePacket *packet = new GamePacket();
 				packet->SetCompressionEnabled(player->IsCompressionEnabled());
-				packet->deserialize(stream);
+				packet->Deserialize(stream);
 				this->packetManager->HandleGameStreams(packet->GetStreams(), player);
 			}
 		}

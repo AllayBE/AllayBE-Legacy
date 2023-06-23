@@ -1,12 +1,15 @@
 #pragma once
 
-#include <cstdint>
 #include "PacketsHandlerManager.h"
+#include <cstdint>
 #include <DS_Map.h>
 #include <misc/BitStreamHelper.h>
 #include <network/minecraft/packets/GamePacket.h>
+#include <network/minecraft/packets/LoginPacket.h>
 #include <network/minecraft/packets/MinecraftPacket.h>
+#include <network/minecraft/packets/NetworkSettingsPacket.h>
 #include <network/minecraft/packets/PacketDefinitions.h>
+#include <network/minecraft/packets/PlayStatusPacket.h>
 #include <network/minecraft/packets/RequestNetworkSettingsPacket.h>
 #include <player/Player.h>
 
@@ -23,7 +26,6 @@ private:
 public:
 	PacketManager();
 
-	void init();
 	bool Add(uint32_t id, MinecraftPacket *packet);
 	bool Remove(uint32_t id);
 	MinecraftPacket *Get(uint32_t id);

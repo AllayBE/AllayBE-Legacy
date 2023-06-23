@@ -1,18 +1,18 @@
 #include <network/raknet/RakNetOfflineMessage.h>
 
 RakNetOfflineMessage::RakNetOfflineMessage(
-	const unsigned char *edition,
-	unsigned char *motd,
+	const char *edition,
+	char *motd,
 	unsigned int protocolVersion,
-	const unsigned char *minecraftVersion,
+	const char *minecraftVersion,
 	unsigned int onlinePlayers,
 	unsigned int maxPlayers,
 	uint64_t uniqueID,
-	unsigned char *secondMotd,
-	const unsigned char *gameMode
+	char *secondMotd,
+	const char *gameMode
 #ifdef _CONTINUE_RAKNET_OFFLINE_MESSAGE
 	,
-	unsigned char gameModeInInt,
+	char gameModeInInt,
 	unsigned short portv4,
 	unsigned short portv6
 #endif
@@ -34,7 +34,7 @@ RakNetOfflineMessage::RakNetOfflineMessage(
 #endif
 }
 
-void RakNetOfflineMessage::SetMotd(unsigned char *value)
+void RakNetOfflineMessage::SetMotd(char *value)
 {
 	this->motd = value;
 }
@@ -44,17 +44,17 @@ void RakNetOfflineMessage::SetOnlinePlayers(unsigned int value)
 	this->onlinePlayers = value;
 }
 
-void RakNetOfflineMessage::SetSecondMotd(unsigned char *value)
+void RakNetOfflineMessage::SetSecondMotd(char *value)
 {
 	this->secondMotd = value;
 }
 
-const unsigned char *RakNetOfflineMessage::GetEdition()
+const char *RakNetOfflineMessage::GetEdition()
 {
 	return this->edition;
 }
 
-unsigned char *RakNetOfflineMessage::GetMotd()
+char *RakNetOfflineMessage::GetMotd()
 {
 	return this->motd;
 }
@@ -64,7 +64,7 @@ unsigned int RakNetOfflineMessage::GetProtocolVersion()
 	return this->protocolVersion;
 }
 
-const unsigned char *RakNetOfflineMessage::GetMinecraftVersion()
+const char *RakNetOfflineMessage::GetMinecraftVersion()
 {
 	return this->minecraftVersion;
 }
@@ -84,18 +84,18 @@ uint64_t RakNetOfflineMessage::GetUniqueID()
 	return this->uniqueID;
 }
 
-unsigned char *RakNetOfflineMessage::GetSecondMotd()
+char *RakNetOfflineMessage::GetSecondMotd()
 {
 	return this->secondMotd;
 }
 
-const unsigned char *RakNetOfflineMessage::GetGameMode()
+const char *RakNetOfflineMessage::GetGameMode()
 {
 	return this->gameMode;
 }
 
 #ifdef _CONTINUE_RAKNET_OFFLINE_MESSAGE
-unsigned char RakNetOfflineMessage::GetGameModeInInt()
+char RakNetOfflineMessage::GetGameModeInInt()
 {
 	return this->gameModeInInt;
 }
@@ -115,11 +115,11 @@ RakString RakNetOfflineMessage::ToString()
 {
 	RakString value(this->edition);
 	value += ";";
-	value += (const char *)this->motd;
+	value += this->motd;
 	value += ";";
 	value += std::to_string(this->protocolVersion).c_str();
 	value += ";";
-	value += (const char *)this->minecraftVersion;
+	value += this->minecraftVersion;
 	value += ";";
 	value += std::to_string(this->onlinePlayers).c_str();
 	value += ";";
@@ -127,9 +127,9 @@ RakString RakNetOfflineMessage::ToString()
 	value += ";";
 	value += std::to_string(this->uniqueID).c_str();
 	value += ";";
-	value += (const char *)this->secondMotd;
+	value += this->secondMotd;
 	value += ";";
-	value += (const char *)this->gameMode;
+	value += this->gameMode;
 #ifdef _CONTINUE_RAKNET_OFFLINE_MESSAGE
 	value += ";";
 	value += std::to_string(this->gameModeInInt);
@@ -148,5 +148,5 @@ void RakNetOfflineMessage::FreeMemory()
 	{
 		str.FreeMemory();
 	}
-	this->usedStrings.empty();
+	this->usedStrings.clear();
 }

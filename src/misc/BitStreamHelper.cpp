@@ -20,6 +20,13 @@ void BitStreamHelper::WriteUnsignedVarInt(uint32_t value, BitStream *stream)
 	}
 }
 
+void BitStreamHelper::WriteByteArrayVarInt(uint8_t *value, BitStream *stream)
+{
+	uint32_t numOfBytesToWrite = sizeof(value);
+	WriteUnsignedVarInt(numOfBytesToWrite, stream);
+	stream->WriteAlignedBytes(value, numOfBytesToWrite);
+}
+
 uint32_t BitStreamHelper::ReadUnsignedVarInt(BitStream *stream)
 {
 	uint32_t value = 0;
@@ -36,4 +43,26 @@ uint32_t BitStreamHelper::ReadUnsignedVarInt(BitStream *stream)
 		}
 	}
 	throw std::runtime_error("VarInt is too big");
+}
+
+uint8_t *BitStreamHelper::ReadByteArrayVarInt(BitStream *stream)
+{
+	uint32_t byteArraySize = ReadUnsignedVarInt(stream);
+	uint8_t *value = (uint8_t *)rakMalloc(byteArraySize + 1);
+	if (byteArraySize > 0)
+	{
+		if (stream->ReadAlignedBytes(value, byteArraySize))
+		{
+			value[byteArraySize] = 0;
+		}
+		else
+		{
+			rakFree_Ex(value, _FILE_AND_LINE_);
+		}
+	}
+	else
+	{
+		stream->AlignReadToByteBoundary();
+	}
+	return value;
 }

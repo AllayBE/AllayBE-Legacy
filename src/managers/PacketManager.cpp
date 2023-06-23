@@ -4,6 +4,9 @@ PacketManager::PacketManager()
 {
 	this->packetsHandlerManager = new PacketsHandlerManager();
 
+	this->Add(ID_LOGIN, new LoginPacket());
+	this->Add(ID_PLAY_STATUS, new PlayStatusPacket());
+	this->Add(ID_NETWORK_SETTINGS, new NetworkSettingsPacket());
 	this->Add(ID_REQUEST_NETWORK_SETTINGS, new RequestNetworkSettingsPacket());
 }
 
@@ -63,12 +66,12 @@ void PacketManager::HandleGameStreams(StreamList_t streams, Player *player)
 			if (this->list.Has(id))
 			{
 				MinecraftPacket *packet = this->Get(id);
-				packet->deserialize(stream);
+				packet->Deserialize(stream);
 				PacketHandler *handler = this->packetsHandlerManager->Get(id);
 
 				if (handler != nullptr)
 				{
-					handler->processPacket(packet, player);
+					handler->ProcessPacket(packet, player);
 				}
 			}
 		}
