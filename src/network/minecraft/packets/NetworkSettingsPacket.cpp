@@ -36,11 +36,11 @@ bool NetworkSettingsPacket::DeserializeBody(BitStream *stream)
 
 void NetworkSettingsPacket::SerializeBody(BitStream *stream)
 {
-	unsigned char compressionThresholdOutput[sizeof(uint16_t)];
-	stream->ReverseBytes((unsigned char *)&this->compressionThreshold, compressionThresholdOutput, sizeof(uint16_t));
+	unsigned char compressionThresholdOutput[2];
+	stream->ReverseBytes((unsigned char *)&this->compressionThreshold, compressionThresholdOutput, 2);
 	stream->WriteBits((unsigned char *)compressionThresholdOutput, 16, true);
-	unsigned char compressionAlgorithmOutput[sizeof(uint16_t)];
-	stream->ReverseBytes((unsigned char *)&this->compressionAlgorithm, compressionAlgorithmOutput, sizeof(uint16_t));
+	unsigned char compressionAlgorithmOutput[2];
+	stream->ReverseBytes((unsigned char *)&this->compressionAlgorithm, compressionAlgorithmOutput, 2);
 	stream->WriteBits((unsigned char *)compressionAlgorithmOutput, 16, true);
 	stream->Write<bool>(this->clientThrottle);
 	stream->Write<uint8_t>(this->clientThrottleThreshold);
