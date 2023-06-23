@@ -12,9 +12,7 @@ bool LoginPacket::DeserializeBody(BitStream *stream)
 		return false;
 	}
 	uint8_t *byteArray = BitStreamHelper::ReadByteArrayVarInt(stream);
-	BitStream *secondStream = new BitStream(byteArray, sizeof(byteArray), false);
-	this->loginTokens.identity = BitStreamHelper::ReadByteArrayVarInt(secondStream); // todo: rakstringt
-	this->loginTokens.client = BitStreamHelper::ReadByteArrayVarInt(secondStream);
+	this->loginTokens.deserialize(new BitStream(byteArray, sizeof(byteArray), false));
 	return true;
 }
 
@@ -24,8 +22,7 @@ void LoginPacket::SerializeBody(BitStream *stream)
 	uint8_t *byteArray = (uint8_t *)rakMalloc_Ex(8, _FILE_AND_LINE_);
 	BitStream *secondStream = new BitStream(byteArray, (const unsigned int)sizeof(byteArray), true);
 	rakFree_Ex(byteArray, _FILE_AND_LINE_);
-	BitStreamHelper::WriteByteArrayVarInt(this->loginTokens.identity, secondStream);
-	BitStreamHelper::WriteByteArrayVarInt(this->loginTokens.client, secondStream);
+	this->loginTokens.serialize(secondStream);
 	BitStreamHelper::WriteByteArrayVarInt(secondStream->GetData(), stream);
 }
 
