@@ -7,18 +7,14 @@ uint32_t NetworkSettingsPacket::GetID() const
 
 bool NetworkSettingsPacket::DeserializeBody(BitStream *stream)
 {
-	unsigned char compressionThresholdOutput[2];
-	if (!stream->ReadBits((unsigned char *)compressionThresholdOutput, 16, true))
+	if (!BitStreamHelper::ReadLittleEndian<uint16_t>(this->compressionThreshold, stream))
 	{
 		return false;
 	}
-	stream->ReverseBytes(compressionThresholdOutput, (unsigned char *)&this->compressionThreshold, 2);
-	unsigned char compressionAlgorithmOutput[2];
-	if (!stream->ReadBits((unsigned char *)compressionAlgorithmOutput, 16, true))
+	if (!BitStreamHelper::ReadLittleEndian<uint16_t>(this->compressionAlgorithm, stream))
 	{
 		return false;
 	}
-	stream->ReverseBytes(compressionAlgorithmOutput, (unsigned char *)&this->compressionAlgorithm, 2);
 	if (!stream->Read<bool>(this->clientThrottle))
 	{
 		return false;
@@ -36,12 +32,8 @@ bool NetworkSettingsPacket::DeserializeBody(BitStream *stream)
 
 void NetworkSettingsPacket::SerializeBody(BitStream *stream)
 {
-	unsigned char compressionThresholdOutput[2];
-	stream->ReverseBytes((unsigned char *)&this->compressionThreshold, compressionThresholdOutput, 2);
-	stream->WriteBits((unsigned char *)compressionThresholdOutput, 16, true);
-	unsigned char compressionAlgorithmOutput[2];
-	stream->ReverseBytes((unsigned char *)&this->compressionAlgorithm, compressionAlgorithmOutput, 2);
-	stream->WriteBits((unsigned char *)compressionAlgorithmOutput, 16, true);
+	BitStreamHelper::WriteLittleEndian<uint16_t>(this->compressionThreshold, stream);
+	BitStreamHelper::WriteLittleEndian<uint16_t>(this->compressionAlgorithm, stream);
 	stream->Write<bool>(this->clientThrottle);
 	stream->Write<uint8_t>(this->clientThrottleThreshold);
 	stream->Write<float>(this->clientThrottleScalar);
