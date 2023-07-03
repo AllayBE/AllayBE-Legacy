@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-class PlayStatus
+class PlayStatusTypes
 {
 public:
 	static uint8_t LoginSuccess()

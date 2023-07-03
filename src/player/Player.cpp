@@ -47,14 +47,14 @@ void Player::SendPlayStatus(uint8_t status, bool force)
 
 void Player::SendPacket(MinecraftPacket *packet, bool force)
 {
-	char *packetBuffer = (char *)rakMalloc_Ex(8, _FILE_AND_LINE_);
-	BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, sizeof(packetBuffer), true);
-	rakFree(packetBuffer);
+	uint8_t *packetBuffer = (uint8_t *)rakMalloc_Ex(sizeof(packet), _FILE_AND_LINE_);
+	BitStream *packetStream = new BitStream(packetBuffer, sizeof(packetBuffer), true);
+	rakFree_Ex(packetBuffer, _FILE_AND_LINE_);
 	packet->Serialize(packetStream);
 
-	char *gamePacketBuffer = (char *)rakMalloc_Ex(8, _FILE_AND_LINE_);
-	BitStream *gamePacketStream = new BitStream((unsigned char *)gamePacketBuffer, sizeof(gamePacketBuffer), true);
-	rakFree(gamePacketBuffer);
+	uint8_t *gamePacketBuffer = (uint8_t *)rakMalloc_Ex(sizeof(packet), _FILE_AND_LINE_);
+	BitStream *gamePacketStream = new BitStream(gamePacketBuffer, sizeof(gamePacketBuffer), true);
+	rakFree_Ex(gamePacketBuffer, _FILE_AND_LINE_);
 	GamePacket *gamePacket = new GamePacket();
 	gamePacket->SetCompressionEnabled(this->IsCompressionEnabled());
 	gamePacket->SetStreams({packetStream});

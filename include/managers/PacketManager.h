@@ -11,6 +11,7 @@
 #include <network/minecraft/packets/PacketDefinitions.h>
 #include <network/minecraft/packets/PlayStatusPacket.h>
 #include <network/minecraft/packets/RequestNetworkSettingsPacket.h>
+#include <network/minecraft/packets/ResourcePacksInfoPacket.h>
 #include <player/Player.h>
 
 using namespace RakNet;

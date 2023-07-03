@@ -1,6 +1,6 @@
 [submodule "RakNet"]
 	path = RakNet
 	url = https://github.com/vp817/RakNet
-[submodule "libdeflate"]
-	path = libdeflate
-	url = https://github.com/ebiggers/libdeflate
+[submodule "zlib"]
+	path = zlib
+	url = https://github.com/madler/zlib

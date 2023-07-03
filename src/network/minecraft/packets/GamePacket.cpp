@@ -28,31 +28,34 @@ void GamePacket::SerializeHeader(BitStream *stream)
 	stream->Write<uint8_t>(this->GetID());
 }
 
-// TODO: This is expiremntal
 bool GamePacket::DeserializeBody(BitStream *stream)
 {
-	BitSize_t unreadBytes = BITS_TO_BYTES(stream->GetNumberOfUnreadBits());
-	char *remainingBuffer = (char *)rakMalloc_Ex(unreadBytes, _FILE_AND_LINE_);
-	if (!stream->ReadAlignedBytes((unsigned char *)remainingBuffer, !this->compressionEnabled ? unreadBytes : unreadBytes >> 3))
+	BitSize_t unreadBits = stream->GetNumberOfUnreadBits();
+	uint32_t unreadBytes = !this->compressionEnabled ? BITS_TO_BYTES(unreadBits) : BITS_TO_BYTES(BITS_TO_BYTES(unreadBits));
+
+	uint8_t *remainingBuffer = (uint8_t *)rakMalloc_Ex(unreadBytes, _FILE_AND_LINE_);
+	if (!stream->ReadAlignedBytes(remainingBuffer, unreadBytes))
 	{
 		return false;
 	}
 
 	if (this->compressionEnabled)
 	{
-		char *decompressedBuffer = (char *)rakMalloc_Ex(unreadBytes, _FILE_AND_LINE_);
-		libdeflate_result result = LibDeflateHelper::InflateRaw(remainingBuffer, unreadBytes, decompressedBuffer, unreadBytes);
+		uLongf uncompressedSize = unreadBytes * 10;
+		Bytef *uncompressedBuffer = (Bytef *)rakMalloc_Ex(uncompressedSize, _FILE_AND_LINE_);
 
-		// if (result != LIBDEFLATE_SUCCESS)
-		// {
-		// 	printf("failed to decompress gamepacket\n");
-		// 	return false;
-		// }
+		if (!ZlibHelper::InflateRaw(remainingBuffer, unreadBytes, uncompressedBuffer, uncompressedSize))
+		{
+			rakFree_Ex(uncompressedBuffer, _FILE_AND_LINE_);
+			return false;
+		}
 
-		remainingBuffer = decompressedBuffer;
+		rakFree_Ex(remainingBuffer, _FILE_AND_LINE_);
+		remainingBuffer = uncompressedBuffer;
+		unreadBytes = uncompressedSize;
 	}
 
-	BitStream *dataStream = new BitStream((unsigned char *)remainingBuffer, unreadBytes, true);
+	BitStream *dataStream = new BitStream(remainingBuffer, unreadBytes, true);
 	rakFree_Ex(remainingBuffer, _FILE_AND_LINE_);
 
 	while (dataStream->GetNumberOfUnreadBits() > 0)
@@ -65,12 +68,12 @@ bool GamePacket::DeserializeBody(BitStream *stream)
 				this->streams.push_back(new BitStream(nullptr, 0, false));
 				continue;
 			}
-			char *packetBuffer = (char *)rakMalloc_Ex(packetLength, _FILE_AND_LINE_);
-			if (!dataStream->ReadAlignedBytes((unsigned char *)packetBuffer, packetLength))
+			uint8_t *packetBuffer = (uint8_t *)rakMalloc_Ex(packetLength, _FILE_AND_LINE_);
+			if (!dataStream->ReadAlignedBytes(packetBuffer, packetLength))
 			{
 				continue;
 			}
-			BitStream *packetStream = new BitStream((unsigned char *)packetBuffer, packetLength, true);
+			BitStream *packetStream = new BitStream(packetBuffer, packetLength, true);
 			rakFree_Ex(packetBuffer, _FILE_AND_LINE_);
 
 			this->streams.push_back(packetStream);
@@ -80,6 +83,7 @@ bool GamePacket::DeserializeBody(BitStream *stream)
 			this->streams.push_back(new BitStream(nullptr, 0, false));
 		}
 	}
+
 	return true;
 }
 
@@ -92,9 +96,17 @@ void GamePacket::SerializeBody(BitStream *stream)
 
 		if (this->compressionEnabled)
 		{
-			char *compressedBuffer = (char *)rakMalloc_Ex(bytesUsed, _FILE_AND_LINE_);
-			size_t compressionSize = LibDeflateHelper::DeflateRaw((char *)packetStream->GetData(), bytesUsed, compressedBuffer);
-			stream->WriteAlignedBytes((unsigned char *)compressedBuffer, (const unsigned int)compressionSize);
+			uLongf compressedSize = compressBound(bytesUsed);
+			Bytef *compressedBuffer = (Bytef *)rakMalloc_Ex(compressedSize, _FILE_AND_LINE_);
+
+			if (!ZlibHelper::DeflateRaw(7, packetStream->GetData(), bytesUsed, compressedBuffer, compressedSize))
+			{
+				rakFree_Ex(compressedBuffer, _FILE_AND_LINE_);
+				return;
+			}
+
+			stream->WriteAlignedBytes(compressedBuffer, compressedSize);
+
 			rakFree_Ex(compressedBuffer, _FILE_AND_LINE_);
 		}
 		else

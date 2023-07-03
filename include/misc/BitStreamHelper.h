@@ -13,7 +13,7 @@ public:
 	static void WriteByteArrayVarInt(uint8_t *value, BitStream *stream);
 
 	template <typename T>
-	static void WriteLittleEndian(T value, BitStream *stream)
+	static void WriteLittleEndian(T &value, BitStream *stream)
 	{
 		unsigned char output[sizeof(T)];
 		stream->ReverseBytes((unsigned char *)&value, output, sizeof(T));
@@ -24,7 +24,7 @@ public:
 	static uint8_t *ReadByteArrayVarInt(BitStream *stream);
 
 	template <typename T>
-	static bool ReadLittleEndian(T value, BitStream *stream)
+	static bool ReadLittleEndian(T &value, BitStream *stream)
 	{
 		unsigned char output[sizeof(T)];
 		if (!stream->ReadBits((unsigned char *)output, sizeof(T) * 8, true))

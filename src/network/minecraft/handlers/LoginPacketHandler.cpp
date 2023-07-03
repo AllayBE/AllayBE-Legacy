@@ -15,12 +15,20 @@ bool LoginPacketHandler::ProcessPacket(MinecraftPacket *normalPacket, Player *pl
 
 	if (protocolVersion != MINECRAFT_PROTOCOL_VERSION)
 	{
-		player->SendPlayStatus(protocolVersion < MINECRAFT_PROTOCOL_VERSION ? PlayStatus::LoginFailedClient() : PlayStatus::LoginFailedServer());
+		player->SendPlayStatus(protocolVersion < MINECRAFT_PROTOCOL_VERSION ? PlayStatusTypes::LoginFailedClient() : PlayStatusTypes::LoginFailedServer());
 		return false;
 	}
 
 	printf("[LoginPacketHandler] Success on login\n");
 
-	player->SendPlayStatus(PlayStatus::LoginSuccess());
+	player->SendPlayStatus(PlayStatusTypes::LoginSuccess());
+
+	ResourcePacksInfoPacket *secondPacket = new ResourcePacksInfoPacket();
+	secondPacket->SetMustAccept(false);
+	secondPacket->SetHasScripts(false);
+	secondPacket->SetForceServerPacks(false);
+	secondPacket->SetBehaviorPacks({});
+	secondPacket->SetTexturePacks({});
+	player->SendPacket(secondPacket);
 	return true;
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MinecraftPacket.h"
-#include <misc/LibDeflateHelper.h>
+#include <misc/ZlibHelper.h>
 #include <vector>
 
 typedef std::vector<BitStream *> StreamList_t;

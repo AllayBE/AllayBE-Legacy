@@ -6,6 +6,7 @@ PacketManager::PacketManager()
 
 	this->Add(ID_LOGIN, new LoginPacket());
 	this->Add(ID_PLAY_STATUS, new PlayStatusPacket());
+	this->Add(ID_RESOURCE_PACKS_INFO, new ResourcePacksInfoPacket());
 	this->Add(ID_NETWORK_SETTINGS, new NetworkSettingsPacket());
 	this->Add(ID_REQUEST_NETWORK_SETTINGS, new RequestNetworkSettingsPacket());
 }
