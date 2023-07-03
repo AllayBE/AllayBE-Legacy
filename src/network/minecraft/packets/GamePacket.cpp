@@ -58,7 +58,7 @@ bool GamePacket::DeserializeBody(BitStream *stream)
 	BitStream *dataStream = new BitStream(remainingBuffer, unreadBytes, true);
 	rakFree_Ex(remainingBuffer, _FILE_AND_LINE_);
 
-	while (dataStream->GetNumberOfUnreadBits() > 0)
+	do
 	{
 		try
 		{
@@ -82,8 +82,7 @@ bool GamePacket::DeserializeBody(BitStream *stream)
 		{
 			this->streams.push_back(new BitStream(nullptr, 0, false));
 		}
-	}
-
+	} while (dataStream->GetNumberOfUnreadBits() > 0);
 	return true;
 }
 
