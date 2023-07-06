@@ -52,8 +52,8 @@ void Player::SendPacket(MinecraftPacket *packet, bool force)
 	rakFree_Ex(packetBuffer, _FILE_AND_LINE_);
 	packet->Serialize(packetStream);
 
-	uint8_t *gamePacketBuffer = (uint8_t *)rakMalloc_Ex(packetStream->GetNumberOfBytesUsed(), _FILE_AND_LINE_);
-	BitStream *gamePacketStream = new BitStream(gamePacketBuffer, sizeof(packetStream->GetData()), true);
+	uint8_t *gamePacketBuffer = (uint8_t *)rakMalloc_Ex(0, _FILE_AND_LINE_);
+	BitStream *gamePacketStream = new BitStream(gamePacketBuffer, sizeof(gamePacketBuffer), true);
 	rakFree_Ex(gamePacketBuffer, _FILE_AND_LINE_);
 	GamePacket *gamePacket = new GamePacket();
 	gamePacket->SetCompressionEnabled(this->IsCompressionEnabled());
