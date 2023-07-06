@@ -39,7 +39,7 @@ bool ZlibHelper::DeflateRaw(int compressionLevel, const void *inputBuffer, uLong
 	zStream.zalloc = Z_NULL;
 	zStream.zfree = Z_NULL;
 
-	int status = deflateInit2(&zStream, compressionLevel, Z_DEFLATED, -MAX_WBITS, 9, Z_DEFAULT_STRATEGY);
+	int status = deflateInit2(&zStream, compressionLevel, Z_DEFLATED, -MAX_WBITS, 8, Z_DEFAULT_STRATEGY);
 
 	if (status != Z_OK)
 	{
