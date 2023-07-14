@@ -94,7 +94,7 @@ void GamePacket::SerializeBody(BitStream *stream)
 	{
 		BitSize_t dataSize = dataStream->GetNumberOfBytesUsed();
 		BitStreamHelper::WriteUnsignedVarInt(dataSize, &bs);
-		bs.WriteAlignedBytes((unsigned char *)dataStream->GetData(), dataSize);
+		bs.WriteAlignedBytes(dataStream->GetData(), dataSize);
 	}
 
 	uint8_t* bsData = bs.GetData();
