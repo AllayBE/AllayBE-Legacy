@@ -11,6 +11,7 @@ class BitStreamHelper
 public:
 	static void WriteUnsignedVarInt(uint32_t value, BitStream *stream);
 	static void WriteByteArrayVarInt(uint8_t *value, BitStream *stream);
+	static void WriteBool(bool value, BitStream *stream);
 
 	template <typename T>
 	static void WriteLittleEndian(T &value, BitStream *stream)
@@ -22,6 +23,7 @@ public:
 
 	static uint32_t ReadUnsignedVarInt(BitStream *stream);
 	static uint8_t *ReadByteArrayVarInt(BitStream *stream);
+	static bool ReadBool(bool &value, BitStream *stream);
 
 	template <typename T>
 	static bool ReadLittleEndian(T &value, BitStream *stream)

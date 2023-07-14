@@ -27,6 +27,11 @@ void BitStreamHelper::WriteByteArrayVarInt(uint8_t *value, BitStream *stream)
 	stream->WriteAlignedBytes(value, numOfBytesToWrite);
 }
 
+void BitStreamHelper::WriteBool(bool value, BitStream *stream)
+{
+	stream->Write<uint8_t>(value == true ? 1 : false);
+}
+
 uint32_t BitStreamHelper::ReadUnsignedVarInt(BitStream *stream)
 {
 	uint32_t value = 0;
@@ -65,4 +70,12 @@ uint8_t *BitStreamHelper::ReadByteArrayVarInt(BitStream *stream)
 		stream->AlignReadToByteBoundary();
 	}
 	return value;
+}
+
+bool BitStreamHelper::ReadBool(bool &value, BitStream *stream)
+{
+	uint8_t retVal;
+	bool read = stream->Read<uint8_t>(retVal);
+	value = retVal;
+	return read;
 }

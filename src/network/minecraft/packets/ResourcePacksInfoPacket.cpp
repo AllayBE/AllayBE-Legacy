@@ -7,15 +7,15 @@ uint32_t ResourcePacksInfoPacket::GetID() const
 
 bool ResourcePacksInfoPacket::DeserializeBody(BitStream *stream)
 {
-	if (!stream->Read<bool>(this->mustAccept))
+	if (!BitStreamHelper::ReadBool(this->mustAccept, stream))
 	{
 		return false;
 	}
-	if (!stream->Read<bool>(this->hasScripts))
+	if (!BitStreamHelper::ReadBool(this->hasScripts, stream))
 	{
 		return false;
 	}
-	if (!stream->Read<bool>(this->forceServerPacks))
+	if (!BitStreamHelper::ReadBool(this->forceServerPacks, stream))
 	{
 		return false;
 	}
@@ -43,30 +43,23 @@ bool ResourcePacksInfoPacket::DeserializeBody(BitStream *stream)
 
 void ResourcePacksInfoPacket::SerializeBody(BitStream *stream)
 {
-	// stream->Write<bool>(this->mustAccept);
-	// stream->Write<bool>(this->hasScripts);
-	// stream->Write<bool>(this->forceServerPacks);
-	stream->Write<uint8_t>(0);
-	stream->Write<uint8_t>(0);
-	stream->Write<uint8_t>(0);
+	BitStreamHelper::WriteBool(this->mustAccept, stream);
+	BitStreamHelper::WriteBool(this->hasScripts, stream);
+	BitStreamHelper::WriteBool(this->forceServerPacks, stream);
 
-	// int16_t behaviorPacksSize = static_cast<int16_t>(this->behaviorPacks.size());
-	// BitStreamHelper::WriteLittleEndian<int16_t>(behaviorPacksSize, stream);
-	// for (int16_t i = 0; i < behaviorPacksSize; ++i)
-	// {
-	// 	this->behaviorPacks[i].serialize(stream);
-	// }
-	stream->Write<uint8_t>(0);
-	stream->Write<uint8_t>(0);
+	int16_t behaviorPacksSize = static_cast<int16_t>(this->behaviorPacks.size());
+	BitStreamHelper::WriteLittleEndian<int16_t>(behaviorPacksSize, stream);
+	for (int16_t i = 0; i < behaviorPacksSize; ++i)
+	{
+		this->behaviorPacks[i].serialize(stream);
+	}
 
-	stream->Write<uint8_t>(0);
-	stream->Write<uint8_t>(0);
-	// int16_t texturePacksSize = static_cast<int16_t>(this->texturePacks.size());
-	// BitStreamHelper::WriteLittleEndian<int16_t>(texturePacksSize, stream);
-	// for (int16_t i = 0; i < texturePacksSize; ++i)
-	// {
-	// 	this->texturePacks[i].serialize(stream);
-	// }
+	int16_t texturePacksSize = static_cast<int16_t>(this->texturePacks.size());
+	BitStreamHelper::WriteLittleEndian<int16_t>(texturePacksSize, stream);
+	for (int16_t i = 0; i < texturePacksSize; ++i)
+	{
+		this->texturePacks[i].serialize(stream);
+	}
 }
 
 void ResourcePacksInfoPacket::SetMustAccept(bool value)
