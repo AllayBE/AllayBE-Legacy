@@ -1,4 +1,5 @@
 #include <misc/BitStreamHelper.h>
+#include <iostream>
 
 void BitStreamHelper::WriteUnsignedVarInt(uint32_t value, BitStream *stream)
 {
@@ -27,6 +28,20 @@ void BitStreamHelper::WriteByteArrayVarInt(uint8_t *value, BitStream *stream)
 	stream->WriteAlignedBytes(value, numOfBytesToWrite);
 }
 
+void BitStreamHelper::WriteStringIntLE(std::string value, BitStream *stream)
+{
+	int32_t numOfBytesToWrite = sizeof(value);
+	WriteLittleEndian<int32_t>(numOfBytesToWrite, stream);
+	stream->WriteAlignedBytes((unsigned char *)value.c_str(), numOfBytesToWrite);
+}
+
+void BitStreamHelper::WriteStringVarInt(std::string value, BitStream *stream)
+{
+	int32_t numOfBytesToWrite = sizeof(value);
+	WriteUnsignedVarInt(numOfBytesToWrite, stream);
+	stream->WriteAlignedBytes((unsigned char *)value.c_str(), numOfBytesToWrite);
+}
+
 void BitStreamHelper::WriteBool(bool value, BitStream *stream)
 {
 	stream->Write<uint8_t>(value == true ? 1 : false);
@@ -53,7 +68,7 @@ uint32_t BitStreamHelper::ReadUnsignedVarInt(BitStream *stream)
 uint8_t *BitStreamHelper::ReadByteArrayVarInt(BitStream *stream)
 {
 	uint32_t byteArraySize = ReadUnsignedVarInt(stream);
-	uint8_t *value = (uint8_t *)rakMalloc(byteArraySize + 1);
+	uint8_t *value = (uint8_t *)rakMalloc_Ex(byteArraySize + 1, _FILE_AND_LINE_);
 	if (byteArraySize > 0)
 	{
 		if (stream->ReadAlignedBytes(value, byteArraySize))
@@ -70,6 +85,57 @@ uint8_t *BitStreamHelper::ReadByteArrayVarInt(BitStream *stream)
 		stream->AlignReadToByteBoundary();
 	}
 	return value;
+}
+
+std::string BitStreamHelper::ReadStringIntLE(BitStream* stream)
+{
+	int32_t byteArraySize;
+    ReadLittleEndian<int32_t>(byteArraySize, stream);
+    std::string result;
+
+    if (byteArraySize > 0)
+    {
+        uint8_t* value = (uint8_t*)rakMalloc_Ex(byteArraySize + 1, _FILE_AND_LINE_);
+        if (stream->ReadAlignedBytes(value, byteArraySize))
+        {
+            value[byteArraySize] = 0;
+            result = reinterpret_cast<char*>(value);
+        }
+        else
+        {
+            rakFree_Ex(value, _FILE_AND_LINE_);
+        }
+    }
+    else
+    {
+        stream->AlignReadToByteBoundary();
+    }
+    return result;
+}
+
+std::string BitStreamHelper::ReadStringVarInt(BitStream *stream)
+{
+	uint32_t byteArraySize = ReadUnsignedVarInt(stream);
+    std::string result;
+
+    if (byteArraySize > 0)
+    {
+        uint8_t* value = (uint8_t*)rakMalloc_Ex(byteArraySize + 1, _FILE_AND_LINE_);
+        if (stream->ReadAlignedBytes(value, byteArraySize))
+        {
+            value[byteArraySize] = 0;
+            result = reinterpret_cast<char*>(value);
+        }
+        else
+        {
+            rakFree_Ex(value, _FILE_AND_LINE_);
+        }
+    }
+    else
+    {
+        stream->AlignReadToByteBoundary();
+    }
+    return result;
 }
 
 bool BitStreamHelper::ReadBool(bool &value, BitStream *stream)

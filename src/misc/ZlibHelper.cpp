@@ -49,7 +49,6 @@ bool ZlibHelper::DeflateRaw(int compressionLevel, const void *inputBuffer, uLong
 
 	status = deflate(&zStream, Z_FINISH);
 
-
 	if (status != Z_STREAM_END && status != Z_OK)
 	{
 		deflateEnd(&zStream);

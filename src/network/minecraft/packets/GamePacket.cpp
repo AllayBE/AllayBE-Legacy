@@ -97,8 +97,8 @@ void GamePacket::SerializeBody(BitStream *stream)
 		bs.WriteAlignedBytes(dataStream->GetData(), dataSize);
 	}
 
-	uint8_t* bsData = bs.GetData();
-    BitSize_t bsDataSize = bs.GetNumberOfBytesUsed();
+	uint8_t *bsData = bs.GetData();
+	BitSize_t bsDataSize = bs.GetNumberOfBytesUsed();
 	if (compressionEnabled)
 	{
 		uLongf compressedSize = compressBound(bsDataSize);

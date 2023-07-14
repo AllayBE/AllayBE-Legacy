@@ -3,36 +3,37 @@
 #include <BitStream.h>
 #include <cstdint>
 #include <misc/BitStreamHelper.h>
+#include <string>
 
 struct BehaviorPackInfo
 {
-	uint8_t *uuid;
-	uint8_t *version;
+	std::string uuid;
+	std::string version;
 	uint64_t size;
-	uint8_t *contentKey;
-	uint8_t *subPackName;
-	uint8_t *contentIdentity;
+	std::string contentKey;
+	std::string subPackName;
+	std::string contentIdentity;
 	bool hasScripts;
 
 	void deserialize(BitStream *stream)
 	{
-		this->uuid = BitStreamHelper::ReadByteArrayVarInt(stream);
-		this->version = BitStreamHelper::ReadByteArrayVarInt(stream);
+		this->uuid = BitStreamHelper::ReadStringVarInt(stream);
+		this->version = BitStreamHelper::ReadStringVarInt(stream);
 		BitStreamHelper::ReadLittleEndian<uint64_t>(this->size, stream);
-		this->contentKey = BitStreamHelper::ReadByteArrayVarInt(stream);
-		this->subPackName = BitStreamHelper::ReadByteArrayVarInt(stream);
-		this->contentIdentity = BitStreamHelper::ReadByteArrayVarInt(stream);
-		stream->Read<bool>(this->hasScripts);
+		this->contentKey = BitStreamHelper::ReadStringVarInt(stream);
+		this->subPackName = BitStreamHelper::ReadStringVarInt(stream);
+		this->contentIdentity = BitStreamHelper::ReadStringVarInt(stream);
+		BitStreamHelper::ReadBool(this->hasScripts, stream);
 	}
 
 	void serialize(BitStream *stream)
 	{
-		BitStreamHelper::WriteByteArrayVarInt(this->uuid, stream);
-		BitStreamHelper::WriteByteArrayVarInt(this->version, stream);
+		BitStreamHelper::WriteStringVarInt(this->uuid, stream);
+		BitStreamHelper::WriteStringVarInt(this->version, stream);
 		BitStreamHelper::WriteLittleEndian<uint64_t>(this->size, stream);
-		BitStreamHelper::WriteByteArrayVarInt(this->contentKey, stream);
-		BitStreamHelper::WriteByteArrayVarInt(this->subPackName, stream);
-		BitStreamHelper::WriteByteArrayVarInt(this->contentIdentity, stream);
-		stream->Write<bool>(this->hasScripts);
+		BitStreamHelper::WriteStringVarInt(this->contentKey, stream);
+		BitStreamHelper::WriteStringVarInt(this->subPackName, stream);
+		BitStreamHelper::WriteStringVarInt(this->contentIdentity, stream);
+		BitStreamHelper::WriteBool(this->hasScripts, stream);
 	}
 };

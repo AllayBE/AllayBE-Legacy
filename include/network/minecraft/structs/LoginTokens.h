@@ -3,21 +3,22 @@
 #include <BitStream.h>
 #include <cstdint>
 #include <misc/BitStreamHelper.h>
+#include <string>
 
 struct LoginTokens
 {
-	uint8_t *identity;
-	uint8_t *client;
+	std::string identity;
+	std::string client;
 
 	void deserialize(BitStream *stream)
 	{
-		this->identity = BitStreamHelper::ReadByteArrayVarInt(stream); // should be rakstring so it doesnt turn into crap
-		this->client = BitStreamHelper::ReadByteArrayVarInt(stream);
+		this->identity = BitStreamHelper::ReadStringIntLE(stream);
+		this->client = BitStreamHelper::ReadStringIntLE(stream);
 	}
 
 	void serialize(BitStream *stream)
 	{
-		BitStreamHelper::WriteByteArrayVarInt(this->identity, stream);
-		BitStreamHelper::WriteByteArrayVarInt(this->client, stream);
+		BitStreamHelper::WriteStringIntLE(this->identity, stream);
+		BitStreamHelper::WriteStringIntLE(this->client, stream);
 	}
 };
