@@ -26,6 +26,6 @@ public:
 	SystemAddress GetAddress();
 	size_t GetHashedAddress();
 	int32_t GetProtocolVersion();
-	void SendPlayStatus(uint8_t status, bool force = false);
+	void SendPlayStatus(int32_t status, bool force = false);
 	void SendPacket(MinecraftPacket *packet, bool force = false);
 };

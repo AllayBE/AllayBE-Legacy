@@ -90,29 +90,27 @@ void GamePacket::SerializeBody(BitStream *stream)
 {
 	BitStream bs;
 
-	for (const auto &packetStream : this->streams)
+	for (const auto &dataStream : this->streams)
 	{
-		BitSize_t dataSize = packetStream->GetNumberOfBytesUsed();
+		BitSize_t dataSize = dataStream->GetNumberOfBytesUsed();
 		BitStreamHelper::WriteUnsignedVarInt(dataSize, &bs);
-		bs.WriteAlignedBytes(packetStream->GetData(), dataSize);
+		bs.WriteAlignedBytes((unsigned char *)dataStream->GetData(), dataSize);
 	}
 
-	uint8_t *bsData = bs.GetData();
-	BitSize_t bsDataSize = bs.GetNumberOfBytesUsed();
-	if (this->compressionEnabled)
+	uint8_t* bsData = bs.GetData();
+    BitSize_t bsDataSize = bs.GetNumberOfBytesUsed();
+	if (compressionEnabled)
 	{
 		uLongf compressedSize = compressBound(bsDataSize);
-		Bytef *compressedBuffer = (Bytef *)rakMalloc_Ex(compressedSize, _FILE_AND_LINE_);
+		Bytef *compressedBuffer = (Bytef *)malloc(compressedSize);
 
-		if (!ZlibHelper::DeflateRaw(7, bsData, bsDataSize, compressedBuffer, compressedSize))
+		if (ZlibHelper::DeflateRaw(7, bsData, bsDataSize, compressedBuffer, compressedSize))
 		{
-			rakFree_Ex(compressedBuffer, _FILE_AND_LINE_);
-			return;
+			BitSize_t compressedSizeBits = BYTES_TO_BITS(compressedSize);
+			stream->WriteAlignedBytes(compressedBuffer, compressedSize);
 		}
 
-		stream->WriteAlignedBytes(compressedBuffer, compressedSize);
-
-		rakFree_Ex(compressedBuffer, _FILE_AND_LINE_);
+		free(compressedBuffer);
 	}
 	else
 	{

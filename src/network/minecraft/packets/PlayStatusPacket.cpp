@@ -7,7 +7,7 @@ uint32_t PlayStatusPacket::GetID() const
 
 bool PlayStatusPacket::DeserializeBody(BitStream *stream)
 {
-	if (!stream->Read<uint8_t>(this->status))
+	if (!stream->Read<int32_t>(this->status))
 	{
 		return false;
 	}
@@ -16,15 +16,15 @@ bool PlayStatusPacket::DeserializeBody(BitStream *stream)
 
 void PlayStatusPacket::SerializeBody(BitStream *stream)
 {
-	stream->Write<uint8_t>(this->status);
+	stream->Write<int32_t>(this->status);
 }
 
-void PlayStatusPacket::SetStatus(uint8_t value)
+void PlayStatusPacket::SetStatus(int32_t value)
 {
 	this->status = value;
 }
 
-uint8_t PlayStatusPacket::GetStatus()
+int32_t PlayStatusPacket::GetStatus()
 {
 	return this->status;
 }

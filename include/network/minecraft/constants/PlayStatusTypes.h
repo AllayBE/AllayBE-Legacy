@@ -5,52 +5,52 @@
 class PlayStatusTypes
 {
 public:
-	static uint8_t LoginSuccess()
+	static int32_t LoginSuccess()
 	{
 		return 0;
 	}
 
-	static uint8_t LoginFailedClient()
+	static int32_t LoginFailedClient()
 	{
 		return 1;
 	}
 
-	static uint8_t LoginFailedServer()
+	static int32_t LoginFailedServer()
 	{
 		return 2;
 	}
 
-	static uint8_t PlayerSpawn()
+	static int32_t PlayerSpawn()
 	{
 		return 3;
 	}
 
-	static uint8_t LoginFailedInvalidTenant()
+	static int32_t LoginFailedInvalidTenant()
 	{
 		return 4;
 	}
 
-	static uint8_t LoginFailedVanillaEdu()
+	static int32_t LoginFailedVanillaEdu()
 	{
 		return 5;
 	}
 
-	static uint8_t LoginFailedEduVanilla()
+	static int32_t LoginFailedEduVanilla()
 	{
 		return 6;
 	}
 
-	static uint8_t LoginFailedServerFull()
+	static int32_t LoginFailedServerFull()
 	{
 		return 7;
 	}
 
-	static uint8_t LoginFailedEditorVanilla()
+	static int32_t LoginFailedEditorVanilla()
 	{
 		return 8;
 	}
 
-	static uint8_t LoginFailedVanillaEditor()
+	static int32_t LoginFailedVanillaEditor()
 	{
 		return 9;
 	}

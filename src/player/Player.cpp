@@ -38,7 +38,7 @@ int32_t Player::GetProtocolVersion()
 	return this->protocolVersion;
 }
 
-void Player::SendPlayStatus(uint8_t status, bool force)
+void Player::SendPlayStatus(int32_t status, bool force)
 {
 	PlayStatusPacket *packet = new PlayStatusPacket();
 	packet->SetStatus(status);

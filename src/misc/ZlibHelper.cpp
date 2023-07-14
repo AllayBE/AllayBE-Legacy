@@ -43,26 +43,21 @@ bool ZlibHelper::DeflateRaw(int compressionLevel, const void *inputBuffer, uLong
 
 	if (status != Z_OK)
 	{
-		printf("unable to init deflate\n");
 		return false;
 	}
 
 
 	status = deflate(&zStream, Z_FINISH);
 
-	printf("deflate\n");
 
 	if (status != Z_STREAM_END && status != Z_OK)
 	{
-		printf("stream not end\n");
 		deflateEnd(&zStream);
 		return false;
 	}
 
-	printf("done\n");
 	outputSize = zStream.total_out;
 
 	deflateEnd(&zStream);
-	printf("end\n");
 	return true;
 }

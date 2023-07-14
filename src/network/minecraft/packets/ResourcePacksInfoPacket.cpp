@@ -43,23 +43,30 @@ bool ResourcePacksInfoPacket::DeserializeBody(BitStream *stream)
 
 void ResourcePacksInfoPacket::SerializeBody(BitStream *stream)
 {
-	stream->Write<bool>(this->mustAccept);
-	stream->Write<bool>(this->hasScripts);
-	stream->Write<bool>(this->forceServerPacks);
+	// stream->Write<bool>(this->mustAccept);
+	// stream->Write<bool>(this->hasScripts);
+	// stream->Write<bool>(this->forceServerPacks);
+	stream->Write<uint8_t>(0);
+	stream->Write<uint8_t>(0);
+	stream->Write<uint8_t>(0);
 
-	int16_t behaviorPacksSize = static_cast<int16_t>(this->behaviorPacks.size());
-	BitStreamHelper::WriteLittleEndian<int16_t>(behaviorPacksSize, stream);
-	for (int16_t i = 0; i < behaviorPacksSize; ++i)
-	{
-		this->behaviorPacks[i].serialize(stream);
-	}
+	// int16_t behaviorPacksSize = static_cast<int16_t>(this->behaviorPacks.size());
+	// BitStreamHelper::WriteLittleEndian<int16_t>(behaviorPacksSize, stream);
+	// for (int16_t i = 0; i < behaviorPacksSize; ++i)
+	// {
+	// 	this->behaviorPacks[i].serialize(stream);
+	// }
+	stream->Write<uint8_t>(0);
+	stream->Write<uint8_t>(0);
 
-	int16_t texturePacksSize = static_cast<int16_t>(this->texturePacks.size());
-	BitStreamHelper::WriteLittleEndian<int16_t>(texturePacksSize, stream);
-	for (int16_t i = 0; i < texturePacksSize; ++i)
-	{
-		this->texturePacks[i].serialize(stream);
-	}
+	stream->Write<uint8_t>(0);
+	stream->Write<uint8_t>(0);
+	// int16_t texturePacksSize = static_cast<int16_t>(this->texturePacks.size());
+	// BitStreamHelper::WriteLittleEndian<int16_t>(texturePacksSize, stream);
+	// for (int16_t i = 0; i < texturePacksSize; ++i)
+	// {
+	// 	this->texturePacks[i].serialize(stream);
+	// }
 }
 
 void ResourcePacksInfoPacket::SetMustAccept(bool value)

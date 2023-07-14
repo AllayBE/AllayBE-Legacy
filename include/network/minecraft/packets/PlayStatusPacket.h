@@ -5,7 +5,7 @@
 class PlayStatusPacket : public MinecraftPacket
 {
 protected:
-	uint8_t status;
+	int32_t status;
 
 public:
 	virtual uint32_t GetID() const override;
@@ -16,7 +16,7 @@ public:
 	virtual bool DeserializeBody(BitStream *stream) override;
 	virtual void SerializeBody(BitStream *stream) override;
 
-	void SetStatus(uint8_t value);
+	void SetStatus(int32_t value);
 
-	uint8_t GetStatus();
+	int32_t GetStatus();
 };
