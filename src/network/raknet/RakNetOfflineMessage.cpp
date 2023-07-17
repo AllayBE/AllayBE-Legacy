@@ -138,15 +138,5 @@ RakString RakNetOfflineMessage::ToString()
 	value += ";";
 	value += std::to_string(this->portv6);
 #endif
-	this->usedStrings.push_back(value);
 	return value;
-}
-
-void RakNetOfflineMessage::FreeMemory()
-{
-	for (const auto &str : this->usedStrings)
-	{
-		str.FreeMemory();
-	}
-	this->usedStrings.clear();
 }

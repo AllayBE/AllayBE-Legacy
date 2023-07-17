@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <RakMemoryOverride.h>
 #include <RakString.h>
-#include <vector>
 
 using namespace RakNet;
 
@@ -25,7 +24,6 @@ protected:
 	short portv4;
 	short portv6;
 #endif
-	std::vector<RakString> usedStrings;
 
 public:
 	RakNetOfflineMessage(
@@ -66,5 +64,4 @@ public:
 #endif
 
 	RakString ToString();
-	void FreeMemory();
 };

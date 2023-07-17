@@ -55,7 +55,7 @@ bool RakNetInterface::Start()
 
 void RakNetInterface::SetMotd(char *value)
 {
-	if (!this->initialized)
+	if (!this->isInitialized())
 	{
 		return;
 	}
@@ -65,7 +65,7 @@ void RakNetInterface::SetMotd(char *value)
 
 void RakNetInterface::SetSecondMotd(char *value)
 {
-	if (!this->initialized)
+	if (!this->isInitialized())
 	{
 		return;
 	}
@@ -95,7 +95,7 @@ void RakNetInterface::UpdatePong()
 	{
 		this->offlineMessage->SetOnlinePlayers(playerListSize);
 	}
-	this->peer->SetOfflinePingData(this->offlineMessage->ToString());
+	this->peer->SetOfflinePingData(this->offlineMessage->ToString().C_String());
 }
 
 void RakNetInterface::Handle()
@@ -155,14 +155,6 @@ void RakNetInterface::Handle()
 			}
 		}
 	}
-}
-
-void RakNetInterface::FreeMemory()
-{
-	this->playerManager->GetAll().Clear();
-	this->packetManager->GetAll().Clear();
-	this->packetManager->GetPacketsHandlerManager()->GetAll().Clear();
-	this->offlineMessage->FreeMemory();
 }
 
 void RakNetInterface::Shutdown()

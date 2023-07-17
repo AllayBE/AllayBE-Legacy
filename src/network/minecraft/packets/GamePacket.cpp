@@ -102,7 +102,7 @@ void GamePacket::SerializeBody(BitStream *stream)
 	if (compressionEnabled)
 	{
 		uLongf compressedSize = compressBound(bsDataSize);
-		Bytef *compressedBuffer = (Bytef *)malloc(compressedSize);
+		Bytef *compressedBuffer = (Bytef *)rakMalloc_Ex(compressedSize, _FILE_AND_LINE_);
 
 		if (ZlibHelper::DeflateRaw(7, bsData, bsDataSize, compressedBuffer, compressedSize))
 		{
@@ -110,7 +110,7 @@ void GamePacket::SerializeBody(BitStream *stream)
 			stream->WriteAlignedBytes(compressedBuffer, compressedSize);
 		}
 
-		free(compressedBuffer);
+		rakFree_Ex(compressedBuffer, _FILE_AND_LINE_);
 	}
 	else
 	{

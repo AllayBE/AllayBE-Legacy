@@ -9,6 +9,16 @@ PacketManager::PacketManager()
 	this->Add(ID_RESOURCE_PACKS_INFO, new ResourcePacksInfoPacket());
 	this->Add(ID_NETWORK_SETTINGS, new NetworkSettingsPacket());
 	this->Add(ID_REQUEST_NETWORK_SETTINGS, new RequestNetworkSettingsPacket());
+	this->Add(ID_RESOURCE_PACK_STACK, new ResourcePackStackPacket());
+	this->Add(ID_RESOURCE_PACK_CLIENT_RESPONSE, new ResourcePackClientResponsePacket());
+	this->Add(ID_START_GAME, new StartGamePacket());
+	this->Add(ID_BIOME_DEFINITION_LIST, new BiomeDefinitionListPacket());
+	this->Add(ID_CREATIVE_CONTENT, new CreativeContentPacket());
+}
+
+PacketManager::~PacketManager()
+{
+	this->list.Clear();
 }
 
 bool PacketManager::Add(uint32_t id, MinecraftPacket *packet)

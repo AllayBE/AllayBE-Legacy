@@ -1,5 +1,10 @@
 #include <managers/PlayerManager.h>
 
+PlayerManager::~PlayerManager()
+{
+	this->list.Clear();
+}
+
 size_t PlayerManager::HashAddress(SystemAddress address)
 {
 	return std::hash<std::string>{}(address.ToString());

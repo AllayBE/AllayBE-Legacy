@@ -4,6 +4,7 @@
 #include <network/minecraft/handlers/LoginPacketHandler.h>
 #include <network/minecraft/handlers/PacketHandler.h>
 #include <network/minecraft/handlers/RequestNetworkSettingsPacketHandler.h>
+#include <network/minecraft/handlers/ResourcePackClientResponsePacketHandler.h>
 
 using namespace RakNet;
 
@@ -16,6 +17,7 @@ protected:
 
 public:
 	PacketsHandlerManager();
+	~PacketsHandlerManager();
 
 	bool Add(uint32_t id, PacketHandler *handler);
 	bool Remove(uint32_t id);

@@ -36,7 +36,7 @@ void NetworkSettingsPacket::SerializeBody(BitStream *stream)
 	BitStreamHelper::WriteLittleEndian<uint16_t>(this->compressionAlgorithm, stream);
 	stream->Write<bool>(this->clientThrottle);
 	stream->Write<uint8_t>(this->clientThrottleThreshold);
-	stream->Write<float>(this->clientThrottleScalar);
+	BitStreamHelper::WriteLittleEndian<float>(this->clientThrottleScalar, stream);
 }
 
 void NetworkSettingsPacket::SetCompressionThreshold(uint16_t value)

@@ -5,6 +5,7 @@
 #include <network/minecraft/MinecraftVersionDefinitions.h>
 #include <network/minecraft/packets/NetworkSettingsPacket.h>
 #include <network/minecraft/packets/RequestNetworkSettingsPacket.h>
+#include <network/minecraft/packets/ResourcePackClientResponsePacket.h>
 #include <player/Player.h>
 
 class PacketHandler

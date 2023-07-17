@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <DS_Map.h>
 #include <misc/BitStreamHelper.h>
+#include <network/minecraft/packets/BiomeDefinitionListPacket.h>
+#include <network/minecraft/packets/CreativeContentPacket.h>
 #include <network/minecraft/packets/GamePacket.h>
 #include <network/minecraft/packets/LoginPacket.h>
 #include <network/minecraft/packets/MinecraftPacket.h>
@@ -11,7 +13,10 @@
 #include <network/minecraft/packets/PacketDefinitions.h>
 #include <network/minecraft/packets/PlayStatusPacket.h>
 #include <network/minecraft/packets/RequestNetworkSettingsPacket.h>
+#include <network/minecraft/packets/ResourcePackClientResponsePacket.h>
 #include <network/minecraft/packets/ResourcePacksInfoPacket.h>
+#include <network/minecraft/packets/ResourcePackStackPacket.h>
+#include <network/minecraft/packets/StartGamePacket.h>
 #include <player/Player.h>
 
 using namespace RakNet;
@@ -26,6 +31,7 @@ private:
 
 public:
 	PacketManager();
+	~PacketManager();
 
 	bool Add(uint32_t id, MinecraftPacket *packet);
 	bool Remove(uint32_t id);

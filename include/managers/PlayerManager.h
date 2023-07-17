@@ -15,6 +15,8 @@ protected:
 	PlayerList_t list;
 
 public:
+	~PlayerManager();
+
 	size_t HashAddress(SystemAddress address);
 	bool Has(size_t hashedAddress);
 	bool Add(SystemAddress address, RakPeerInterface *peer);

@@ -63,7 +63,6 @@ void Server::Start()
 
 void Server::Stop()
 {
-	this->rakNetInterface->FreeMemory();
 	this->rakNetInterface->Shutdown();
 }
 

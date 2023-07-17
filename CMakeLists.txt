@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 14)
 
 file(GLOB SOURCE
 	src/*.cpp
+	src/nbt/*.cpp
+	src/nbt/list/*.cpp
 	src/misc/*.cpp
 	src/player/*.cpp
 	src/console/*.cpp

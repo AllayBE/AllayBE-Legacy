@@ -43,7 +43,6 @@ public:
 
 	void UpdatePong();
 	void Handle();
-	void FreeMemory();
 	void Shutdown();
 
 	uint64_t Generate64BitUnqiueNumber();

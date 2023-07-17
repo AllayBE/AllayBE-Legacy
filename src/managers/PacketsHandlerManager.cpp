@@ -4,6 +4,12 @@ PacketsHandlerManager::PacketsHandlerManager()
 {
 	this->Add(ID_LOGIN, new LoginPacketHandler());
 	this->Add(ID_REQUEST_NETWORK_SETTINGS, new RequestNetworkSettingsPacketHandler());
+	this->Add(ID_RESOURCE_PACK_CLIENT_RESPONSE, new ResourcePackClientResponsePacketHandler());
+}
+
+PacketsHandlerManager::~PacketsHandlerManager()
+{
+	this->list.Clear();
 }
 
 bool PacketsHandlerManager::Add(uint32_t id, PacketHandler *handler)
