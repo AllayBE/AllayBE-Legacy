@@ -9,6 +9,14 @@ struct Experiment
 	std::string name;
 	bool enabled;
 
+	static Experiment make(std::string name, bool enabled)
+	{
+		Experiment result;
+		result.name = name;
+		result.enabled = enabled;
+		return result;
+	}
+
 	void deserialize(BitStream *stream)
 	{
 		this->name = BitStreamHelper::ReadStringVarInt(stream);

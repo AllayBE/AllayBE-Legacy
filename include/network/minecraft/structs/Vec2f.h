@@ -10,10 +10,10 @@ struct Vec2f
 
 	static Vec2f make(float x, float z)
 	{
-		Vec2f vec;
-		vec.x = x;
-		vec.z = z;
-		return vec;
+		Vec2f result;
+		result.x = x;
+		result.z = z;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

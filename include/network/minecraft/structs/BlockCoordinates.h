@@ -11,11 +11,11 @@ struct BlockCoordinates
 	
 	static BlockCoordinates make(int32_t x, uint32_t y, int32_t z)
 	{
-		BlockCoordinates bc;
-		bc.x = x;
-		bc.y = y;
-		bc.z = z;
-		return bc;
+		BlockCoordinates result;
+		result.x = x;
+		result.y = y;
+		result.z = z;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

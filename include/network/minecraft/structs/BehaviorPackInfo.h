@@ -15,6 +15,19 @@ struct BehaviorPackInfo
 	std::string contentIdentity;
 	bool hasScripts;
 
+	static BehaviorPackInfo make(std::string uuid, std::string version, uint64_t size, std::string contentKey, std::string subPackName, std::string contentIdentity, bool hasScripts)
+	{
+		BehaviorPackInfo result;
+		result.uuid = uuid;
+		result.version = version;
+		result.size = size;
+		result.contentKey = contentKey;
+		result.subPackName = subPackName;
+		result.contentIdentity = contentIdentity;
+		result.hasScripts = hasScripts;
+		return result;
+	}
+
 	void deserialize(BitStream *stream)
 	{
 		this->uuid = BitStreamHelper::ReadStringVarInt(stream);

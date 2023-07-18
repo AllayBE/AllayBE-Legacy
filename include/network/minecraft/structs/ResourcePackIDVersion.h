@@ -10,6 +10,15 @@ struct ResourcePackIDVersion
 	std::string version;
 	std::string name;
 
+	static ResourcePackIDVersion make(std::string uuid, std::string version, std::string name)
+	{
+		ResourcePackIDVersion result;
+		result.uuid = uuid;
+		result.version = version;
+		result.name = name;
+		return result;
+	}
+
 	void deserialize(BitStream *stream)
 	{
 		this->uuid = BitStreamHelper::ReadStringVarInt(stream);

@@ -1,12 +1,16 @@
 #pragma once
 
 #include "MinecraftPacket.h"
-#include <string>
+#include <nbt/list/Compound.h>
+#include <network/minecraft/structs/CreativeContentEntry.h>
+#include <vector>
+
+typedef std::vector<CreativeContentEntry> CreativeContentEntryList_t;
 
 class CreativeContentPacket : public MinecraftPacket
 {
 protected:
-	int entry; // todo
+	CreativeContentEntryList_t entryList; // todo
 
 public:
 	virtual uint32_t GetID() const override;
@@ -16,4 +20,8 @@ public:
 
 	virtual bool DeserializeBody(BitStream *stream) override;
 	virtual void SerializeBody(BitStream *stream) override;
+
+	void SetEntryList(CreativeContentEntryList_t entryList);
+
+	CreativeContentEntryList_t GetEntryList();
 };

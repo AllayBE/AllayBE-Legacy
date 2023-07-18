@@ -16,6 +16,20 @@ struct TexturePackInfo
 	bool hasScripts;
 	bool rtxEnabled;
 
+	static TexturePackInfo make(std::string uuid, std::string name, uint64_t size, std::string contentKey, std::string subPackName, std::string contentIdentity, bool hasScripts, bool rtxEnabled)
+	{
+		TexturePackInfo result;
+		result.uuid = uuid;
+		result.name = name;
+		result.size = size;
+		result.contentKey = contentKey;
+		result.subPackName = subPackName;
+		result.contentIdentity = contentIdentity;
+		result.hasScripts = hasScripts;
+		result.rtxEnabled = rtxEnabled;
+		return result;
+	}
+
 	void deserialize(BitStream *stream)
 	{
 		this->uuid = BitStreamHelper::ReadStringVarInt(stream);

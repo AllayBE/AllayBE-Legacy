@@ -7,13 +7,21 @@ uint32_t BiomeDefinitionListPacket::GetID() const
 
 bool BiomeDefinitionListPacket::DeserializeBody(BitStream *stream)
 {
+	this->nbt = (Compound *)BitStreamHelper::ReadNbtRootNET(stream);
 	return true;
 }
 
 void BiomeDefinitionListPacket::SerializeBody(BitStream *stream)
 {
-	// temp
-	BitStreamHelper::WriteNbtRootNET(new Compound("", {
-		new String("", "Plains")
-	}), stream);
+	BitStreamHelper::WriteNbtRootNET(this->nbt, stream);
+}
+
+void BiomeDefinitionListPacket::SetNbt(Compound *nbt)
+{
+	this->nbt = nbt;
+}
+
+Compound *BiomeDefinitionListPacket::GetNbt()
+{
+	return this->nbt;
 }

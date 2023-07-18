@@ -12,10 +12,10 @@ struct BlockProperty
 
 	static BlockProperty make(std::string name, Tag *state)
 	{
-		BlockProperty bp;
-		bp.name = name;
-		bp.state = state;
-		return bp;
+		BlockProperty result;
+		result.name = name;
+		result.state = state;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

@@ -11,11 +11,11 @@ struct Vec3f
 
 	static Vec3f make(float x, float y, float z)
 	{
-		Vec3f vec;
-		vec.x = x;
-		vec.y = y;
-		vec.z = z;
-		return vec;
+		Vec3f result;
+		result.x = x;
+		result.y = y;
+		result.z = z;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

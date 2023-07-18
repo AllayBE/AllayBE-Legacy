@@ -12,11 +12,11 @@ struct GameRule
 
 	static GameRule make(std::string name, bool editable, uint32_t type)
 	{
-		GameRule gr;
-		gr.name = name;
-		gr.editable = editable;
-		gr.type = type;
-		return gr;
+		GameRule result;
+		result.name = name;
+		result.editable = editable;
+		result.type = type;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

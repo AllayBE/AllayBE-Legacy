@@ -1,12 +1,12 @@
 #pragma once
 
 #include "MinecraftPacket.h"
-#include <string>
+#include <nbt/list/Compound.h>
 
 class BiomeDefinitionListPacket : public MinecraftPacket
 {
 protected:
-	int nbt; // todo
+	Compound *nbt;
 
 public:
 	virtual uint32_t GetID() const override;
@@ -16,4 +16,8 @@ public:
 
 	virtual bool DeserializeBody(BitStream *stream) override;
 	virtual void SerializeBody(BitStream *stream) override;
+
+	void SetNbt(Compound *nbt);
+
+	Compound *GetNbt();
 };

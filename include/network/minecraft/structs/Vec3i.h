@@ -11,11 +11,11 @@ struct Vec3i
 
 	static Vec3i make(int32_t x, int32_t y, int32_t z)
 	{
-		Vec3i vec;
-		vec.x = x;
-		vec.y = y;
-		vec.z = z;
-		return vec;
+		Vec3i result;
+		result.x = x;
+		result.y = y;
+		result.z = z;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

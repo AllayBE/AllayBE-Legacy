@@ -12,11 +12,11 @@ struct ItemState
 
 	static ItemState make(std::string name, int16_t runtimeID, bool componentBased)
 	{
-		ItemState is;
-		is.name = name;
-		is.runtimeID = runtimeID;
-		is.componentBased = componentBased;
-		return is;
+		ItemState result;
+		result.name = name;
+		result.runtimeID = runtimeID;
+		result.componentBased = componentBased;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

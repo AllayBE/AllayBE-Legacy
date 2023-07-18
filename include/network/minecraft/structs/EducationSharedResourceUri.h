@@ -11,10 +11,10 @@ struct EducationSharedResourceUri
 
 	static EducationSharedResourceUri make(std::string buttonName, std::string linkUri)
 	{
-		EducationSharedResourceUri esru;
-		esru.buttonName = buttonName;
-		esru.linkUri = linkUri;
-		return esru;
+		EducationSharedResourceUri result;
+		result.buttonName = buttonName;
+		result.linkUri = linkUri;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

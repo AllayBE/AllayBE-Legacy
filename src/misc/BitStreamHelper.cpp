@@ -59,6 +59,13 @@ void BitStreamHelper::WriteByteArrayVarInt(uint8_t *value, BitStream *stream)
 	stream->WriteAlignedBytes(value, numOfBytesToWrite);
 }
 
+void BitStreamHelper::WriteByteArrayInt16LE(uint8_t *value, BitStream *stream)
+{
+	int16_t numOfBytesToWrite = sizeof(value);
+	WriteLittleEndian<int16_t>(numOfBytesToWrite, stream);
+	stream->WriteAlignedBytes(value, numOfBytesToWrite);
+}
+
 void BitStreamHelper::WriteStringInt32LE(std::string value, BitStream *stream)
 {
 	int32_t numOfBytesToWrite = sizeof(value);
@@ -170,6 +177,29 @@ int64_t BitStreamHelper::ReadZigZag64(BitStream *stream)
 uint8_t *BitStreamHelper::ReadByteArrayVarInt(BitStream *stream)
 {
 	uint32_t byteArraySize = ReadUnsignedVarInt(stream);
+	uint8_t *value = (uint8_t *)rakMalloc_Ex(byteArraySize + 1, _FILE_AND_LINE_);
+	if (byteArraySize > 0)
+	{
+		if (stream->ReadAlignedBytes(value, byteArraySize))
+		{
+			value[byteArraySize] = 0;
+		}
+		else
+		{
+			rakFree_Ex(value, _FILE_AND_LINE_);
+		}
+	}
+	else
+	{
+		stream->AlignReadToByteBoundary();
+	}
+	return value;
+}
+
+uint8_t *BitStreamHelper::ReadByteArrayInt16LE(BitStream *stream)
+{
+	int16_t byteArraySize;
+	ReadLittleEndian<int16_t>(byteArraySize, stream);
 	uint8_t *value = (uint8_t *)rakMalloc_Ex(byteArraySize + 1, _FILE_AND_LINE_);
 	if (byteArraySize > 0)
 	{

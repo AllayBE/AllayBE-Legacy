@@ -106,8 +106,12 @@ bool ResourcePackClientResponsePacketHandler::ProcessPacket(MinecraftPacket *nor
 		player->SendPacket(startGame);
 
 		BiomeDefinitionListPacket *biomeDefinitionList = new BiomeDefinitionListPacket();
+		biomeDefinitionList->SetNbt(new Compound("", {
+			new String("", "Plains")
+		}));
 		player->SendPacket(biomeDefinitionList);
 		CreativeContentPacket *creativeContent = new CreativeContentPacket();
+		creativeContent->SetEntryList({});
 		player->SendPacket(creativeContent);
 
 		player->SendPlayStatus(PlayStatusTypes::PlayerSpawn());

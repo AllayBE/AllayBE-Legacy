@@ -11,11 +11,11 @@ struct Vec3u
 
 	static Vec3u make(uint32_t x, uint32_t y, uint32_t z)
 	{
-		Vec3u vec;
-		vec.x = x;
-		vec.y = y;
-		vec.z = z;
-		return vec;
+		Vec3u result;
+		result.x = x;
+		result.y = y;
+		result.z = z;
+		return result;
 	}
 
 	void deserialize(BitStream *stream)

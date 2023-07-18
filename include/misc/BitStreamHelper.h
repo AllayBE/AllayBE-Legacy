@@ -16,6 +16,7 @@ public:
 	static void WriteZigZag32(int32_t value, BitStream *stream);
 	static void WriteZigZag64(int64_t value, BitStream *stream);
 	static void WriteByteArrayVarInt(uint8_t *value, BitStream *stream);
+	static void WriteByteArrayInt16LE(uint8_t *value, BitStream *stream);
 	static void WriteStringInt32LE(std::string value, BitStream *stream);
 	static void WriteStringVarInt(std::string value, BitStream *stream);
 	static void WriteStringUInt16BE(std::string value, BitStream *stream);
@@ -39,6 +40,7 @@ public:
 	static int32_t ReadZigZag32(BitStream *stream);
 	static int64_t ReadZigZag64(BitStream *stream);
 	static uint8_t *ReadByteArrayVarInt(BitStream *stream);
+	static uint8_t *ReadByteArrayInt16LE(BitStream *stream);
 	static std::string ReadStringInt32LE(BitStream *stream);
 	static std::string ReadStringVarInt(BitStream *stream);
 	static std::string ReadStringUInt16BE(BitStream *stream);
