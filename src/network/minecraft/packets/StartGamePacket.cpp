@@ -10,8 +10,8 @@ bool StartGamePacket::DeserializeBody(BitStream *stream)
 	this->entityID = BitStreamHelper::ReadZigZag64(stream);
 	this->runtimeEntityID = BitStreamHelper::ReadUnsignedVarLong(stream);
 	this->playerGameMode = BitStreamHelper::ReadZigZag32(stream);
-	this->playerPosition.serialize(stream);
-	this->rotation.serialize(stream);
+	this->playerPosition.deserialize(stream);
+	this->rotation.deserialize(stream);
 	if (!BitStreamHelper::ReadLittleEndian<uint64_t>(this->seed, stream))
 	{
 		return false;
@@ -25,7 +25,7 @@ bool StartGamePacket::DeserializeBody(BitStream *stream)
 	this->generator = BitStreamHelper::ReadZigZag32(stream);
 	this->worldGamemode = BitStreamHelper::ReadZigZag32(stream);
 	this->difficulty = BitStreamHelper::ReadZigZag32(stream);
-	this->spawnPosition.serialize(stream);
+	this->spawnPosition.deserialize(stream);
 	if (!BitStreamHelper::ReadBool(this->achivementsDisabled, stream))
 	{
 		return false;
@@ -166,7 +166,7 @@ bool StartGamePacket::DeserializeBody(BitStream *stream)
 	{
 		return false;
 	}
-	this->eduResourceUri.serialize(stream);
+	this->eduResourceUri.deserialize(stream);
 	if (!BitStreamHelper::ReadBool(this->experimentalGameplayOverride, stream))
 	{
 		return false;
