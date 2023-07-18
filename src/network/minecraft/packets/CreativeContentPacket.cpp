@@ -24,7 +24,7 @@ void CreativeContentPacket::SerializeBody(BitStream *stream)
 	BitStreamHelper::WriteUnsignedVarInt(entryListSize, stream);
 	for (uint32_t i = 0; i < entryListSize; ++i)
 	{
-		this->entryList.at(i).deserialize(stream);
+		this->entryList.at(i).serialize(stream);
 	}
 }
 
