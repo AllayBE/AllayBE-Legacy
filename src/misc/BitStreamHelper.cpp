@@ -1,4 +1,6 @@
 #include <misc/BitStreamHelper.h>
+#include <iomanip>
+#include <sstream>
 
 void BitStreamHelper::WriteUnsignedVarInt(uint32_t value, BitStream *stream)
 {
@@ -100,11 +102,15 @@ void BitStreamHelper::WriteNbtRootNET(Tag *value, BitStream *stream)
 	Nbt::WriteRootNET(value, stream);
 }
 
-void BitStreamHelper::WriteUuid(std::string value, int version, BitStream *stream)
+void BitStreamHelper::WriteUuid(std::string value, BitStream *stream)
 {
-	for (size_t i = 0; i < version << 3; i += 2)
+	for (size_t i = 0; i < value.length(); i += 2)
 	{
-		stream->Write<uint8_t>(static_cast<uint8_t>(stoi(value.substr(i, 2), nullptr, 16)));
+		if (i == 8 || i == 13 || i == 18 || i == 23)
+		{
+			i += 1;
+		}
+		stream->Write<uint8_t>(std::stoi(value.substr(i, 2), nullptr, 16));
 	}
 }
 
@@ -303,11 +309,24 @@ Tag *BitStreamHelper::ReadNbtRootNET(BitStream *stream)
 
 std::string BitStreamHelper::ReadUuid(BitStream *stream)
 {
-	// todo
 	uint8_t buffer[16];
-	stream->ReadAlignedBytes(buffer, 16);
+	if (!stream->ReadAlignedBytes(buffer, 16))
+	{
+		throw std::runtime_error("Unable to read UUID from stream");
+	}
 
-	return "reading uuid when its not done";
+	std::stringstream result;
+
+	for (int i = 0; i < 16; ++i)
+	{
+		if (i == 4 || i == 6 || i == 8 || i == 10)
+		{
+			result << "-";
+		}
+		result << std::setw(2) << std::hex << std::setfill('0') << static_cast<int>(buffer[i]);
+	}
+
+	return result.str();
 }
 
 bool BitStreamHelper::ReadBool(bool &value, BitStream *stream)

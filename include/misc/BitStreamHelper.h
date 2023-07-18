@@ -23,7 +23,7 @@ public:
 	static void WriteNbtRootBE(Tag *value, BitStream *stream);
 	static void WriteNbtRootLE(Tag *value, BitStream *stream);
 	static void WriteNbtRootNET(Tag *value, BitStream *stream);
-	static void WriteUuid(std::string value, int version, BitStream *stream);
+	static void WriteUuid(std::string value, BitStream *stream);
 	static void WriteBool(bool value, BitStream *stream);
 
 	template <typename T>

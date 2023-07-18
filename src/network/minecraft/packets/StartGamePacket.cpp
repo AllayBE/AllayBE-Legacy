@@ -327,7 +327,7 @@ void StartGamePacket::SerializeBody(BitStream *stream)
 	BitStreamHelper::WriteStringVarInt(this->engine, stream);
 	BitStreamHelper::WriteNbtRootNET(this->propertyData, stream);
 	BitStreamHelper::WriteLittleEndian<uint64_t>(this->blockPalletteChecksum, stream);
-	BitStreamHelper::WriteUuid(this->worldTemplateID, 4, stream);
+	BitStreamHelper::WriteUuid(this->worldTemplateID, stream);
 	BitStreamHelper::WriteBool(this->clientSideGeneration, stream);
 	BitStreamHelper::WriteBool(this->blockNetworkIDsAreHashes, stream);
 	BitStreamHelper::WriteBool(this->serverControlledSound, stream);
