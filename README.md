@@ -18,4 +18,4 @@ cmake .
 make
 ```
 
-#### If you're gonna steal our code, we will take down your repo <3
+#### If you're gonna steal our code, we will rent a hitman to takedown your life and your github repo <3
