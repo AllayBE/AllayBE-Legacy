@@ -1,17 +1,21 @@
 # AllayBE
-allaybe mcbe software
+AllayBE is a MCBE server software
 
-if u encounter any memory leaks make a pr to fix it
+If you encounter any memory leaks, make a pr to fix it or report it in our Discord (https://discord.gg/8QndUrGFx2)
 
-to build:
-### windows
+# Building
+
+### Windows
+```
 cmake .
-
 msbuild AllayBE
+```
 
 ### linux
+
+```
 cmake .
-
 make
+```
 
-# skid and die
+#### If you're gonna steal our code, we will take down your repo <3
