@@ -82,7 +82,9 @@ bool StartGamePacket::DeserializeBody(BitStream *stream)
 	uint32_t gameRuleListSize = BitStreamHelper::ReadUnsignedVarInt(stream);
 	for (uint32_t i = 0; i < gameRuleListSize; ++i)
 	{
-		this->gameRules.push_back(stream);
+		GameRule gameRule = GameRule::make("", false, 0);
+		gameRule.deserialize(stream);
+		this->gameRules.push_back(gameRule);
 	}
 	int32_t experimentListSize;
 	if (!BitStreamHelper::ReadLittleEndian<int32_t>(experimentListSize, stream))
@@ -91,7 +93,9 @@ bool StartGamePacket::DeserializeBody(BitStream *stream)
 	}
 	for (int32_t i = 0; i < experimentListSize; ++i)
 	{
-		this->experiments.push_back(stream);
+		Experiment experiment = Experiment::make("", false);
+		experiment.deserialize(stream);
+		this->experiments.push_back(experiment);
 	}
 	if (!BitStreamHelper::ReadBool(this->experimentsPreviouslyUsed, stream))
 	{
