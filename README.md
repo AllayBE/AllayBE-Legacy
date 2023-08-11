@@ -8,7 +8,7 @@ If you encounter any memory leaks, make a PR to fix it or report it in our Disco
 ### Windows
 ```
 cmake .
-msbuild AllayBE
+msbuild AllayBE.sln
 ```
 
 ### linux
