@@ -45,7 +45,12 @@ void Server::Start()
 		return;
 	}
 
-	int errorCode = RakThread::Create(RakNetPongHandle, this->rakNetInterface, this->IsWindows() ? THREAD_PRIORITY_NORMAL : 1000);
+	unsigned threadPriority = 1000;
+#ifdef _WIN32
+	threadPriority = THREAD_PRIORITY_NORMAL;
+#endif
+
+	int errorCode = RakThread::Create(RakNetPongHandle, this->rakNetInterface, threadPriority);
 
 	if (errorCode != 0)
 	{
