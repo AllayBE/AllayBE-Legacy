@@ -16,8 +16,6 @@ protected:
 public:
 	Server();
 
-	bool IsWindows();
-
 	void Start();
 	void Stop();
 
