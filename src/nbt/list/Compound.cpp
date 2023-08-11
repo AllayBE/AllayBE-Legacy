@@ -35,8 +35,7 @@ bool Compound::DeserializeBE(BitStream *stream, bool withHeader)
 		Tag *tag = Nbt::GetTag(tagID);
 		tag->DeserializeBE(stream, false);
 		this->value.push_back(tag);
-	} while (stream->GetNumberOfBitsUsed() > 8);
-	stream->IgnoreBits(8);
+	} while (stream->GetNumberOfBitsUsed() > 0);
 	return true;
 }
 
@@ -64,8 +63,7 @@ bool Compound::DeserializeLE(BitStream *stream, bool withHeader)
 		Tag *tag = Nbt::GetTag(tagID);
 		tag->DeserializeLE(stream, false);
 		this->value.push_back(tag);
-	} while (stream->GetNumberOfBitsUsed() > 8);
-	stream->IgnoreBits(8);
+	} while (stream->GetNumberOfBitsUsed() > 0);
 	return true;
 }
 
@@ -93,8 +91,7 @@ bool Compound::DeserializeNET(BitStream *stream, bool withHeader)
 		Tag *tag = Nbt::GetTag(tagID);
 		tag->DeserializeNET(stream, false);
 		this->value.push_back(tag);
-	} while (stream->GetNumberOfBitsUsed() > 8);
-	stream->IgnoreBits(8);
+	} while (stream->GetNumberOfBitsUsed() > 0);
 	return true;
 }
 
