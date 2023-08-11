@@ -1,6 +1,6 @@
 #pragma once
 
-#include <console\Logger.h>
+#include <console/Logger.h>
 #include <cstdint>
 #include <network/minecraft/MinecraftVersionDefinitions.h>
 #include <network/raknet/RakNetInterface.h>
