@@ -80,7 +80,7 @@ void Logger::Print(const char *logMode, const char *logColor, const char *messag
 #ifndef _TIME_FMT_PFX_
 #define _TIME_FMT_PFX_ timeBuffer, sizeof(timeBuffer), "%H:%M:%S"
 #endif
-#ifdef _CRT_SECURE_NO_WARNINGS
+#ifndef _WIN32
 	strftime(_TIME_FMT_PFX_, localtime(&currentTime));
 #else
 	struct tm ltn;
@@ -107,12 +107,7 @@ const char *Logger::FormatMessage(const char *message, va_list arguments)
 		index = 0;
 	}
 
-	int length;
-#ifndef _CRT_SECURE_NO_WARNINGS
-	length = vsnprintf(value[index], sizeof(value[index]), message, arguments);
-#else
-	length = _vsnprintf(value[index], sizeof(value[index]), message, arguments);
-#endif
+	int length = vsnprintf(value[index], sizeof(value[index]), message, arguments);
 	if (length < 0 || length >= sizeof(value[index]))
 	{
 		return nullptr;
