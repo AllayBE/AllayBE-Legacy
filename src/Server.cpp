@@ -29,15 +29,6 @@ RAK_THREAD_DECLARATION(RakNetPongHandle)
 	return 0;
 }
 
-bool Server::IsWindows()
-{
-	bool value = false;
-#ifdef _WIN32
-	value = true;
-#endif
-	return value;
-}
-
 void Server::Start()
 {
 	this->logger->Info("Starting Server...\n");
