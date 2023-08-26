@@ -7,14 +7,13 @@ If you encounter any memory leaks, make a PR to fix it or report it in our Disco
 
 ### Windows
 ```
-cmake .
+cmake -DCMAKE_BUILD_TYPE=Debug
 msbuild AllayBE.sln
 ```
 
 ### linux
-
 ```
-cmake .
+cmake -DCMAKE_BUILD_TYPE=Debug
 make
 ```
 
