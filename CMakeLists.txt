@@ -17,6 +17,11 @@ file(GLOB SOURCE
 
 set(SOURCE_FILES ${SOURCE})
 
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
+endif()
+
 add_executable(AllayBE ${SOURCE_FILES})
 
 add_subdirectory(RakNet)
