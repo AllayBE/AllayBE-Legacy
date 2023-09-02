@@ -16,5 +16,3 @@ msbuild AllayBE.sln
 cmake -DCMAKE_BUILD_TYPE=Debug
 make
 ```
-
-#### If you're gonna steal our code, we will rent a hitman to takedown your life and your github repo <3
