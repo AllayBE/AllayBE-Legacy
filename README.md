@@ -1,7 +1,7 @@
 # AllayBE
 AllayBE is a MCBE server software
 
-If you encounter any memory leaks, make a PR to fix it or report it in our Discord (https://discord.gg/8QndUrGFx2)
+If you encounter any memory leaks, make a PR to fix it or report it in our Discord (https://discord.com/invite/BmQXY3vvvp)
 
 # Building
 
