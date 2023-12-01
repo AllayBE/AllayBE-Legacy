@@ -1,7 +1,7 @@
+<!--
+
 # AllayBE
 AllayBE is a MCBE server software
-
-If you encounter any memory leaks, make a PR to fix it or report it in our Discord (https://discord.com/invite/BmQXY3vvvp)
 
 # Building
 
@@ -16,3 +16,10 @@ msbuild AllayBE.sln
 cmake -DCMAKE_BUILD_TYPE=Debug
 make
 ```
+-->
+
+# AllayBE-Legacy
+
+Legacy version of allaybe
+
+Discord: https://discord.com/invite/BmQXY3vvvp
